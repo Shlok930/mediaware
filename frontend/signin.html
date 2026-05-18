@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mediaware AI Sign In - Your Trusted AI Companion</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+        /* --- General Styling & Color Palette --- */
+        :root {
+            --color-blue-primary: #2196F3; /* Trust/Professional */
+            --color-green-primary: #4CAF50; /* Health/Care */
+            --color-light-blue: #E0F7FA;   /* Accent Background */
+            --color-white: #FFFFFF;
+            --color-text: #333333;
+            --color-placeholder: #757575;
+            --color-shadow: rgba(0, 0, 0, 0.1);
+            --border-radius: 12px;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: var(--color-light-blue);
+            color: var(--color-text);
+        }
+
+        .signin-container {
+            display: flex;
+            width: 900px;
+            max-width: 95%;
+            border-radius: var(--border-radius);
+            box-shadow: 0 10px 30px var(--color-shadow);
+            overflow: hidden;
+            background-color: var(--color-white);
+        }
+
+        /* --- Left Panel: Visual/Branding --- */
+        .visual-panel {
+            flex: 1;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, var(--color-light-blue), #B2EBF2);
+            text-align: center;
+            color: var(--color-text);
+        }
+
+        .chatbot-icon {
+            font-size: 80px;
+            color: var(--color-green-primary);
+            margin-bottom: 20px;
+            border: 5px solid var(--color-white);
+            border-radius: 50%;
+            padding: 15px;
+            background-color: var(--color-white);
+            box-shadow: 0 4px 15px var(--color-shadow);
+        }
+
+        .visual-panel h2 {
+            margin-top: 0;
+            color: var(--color-blue-primary);
+        }
+
+        /* --- Right Panel: Sign-In Form --- */
+        .form-panel {
+            flex: 1;
+            padding: 50px;
+            background-color: var(--color-white);
+            max-height: 80vh; /* Limit height for scrollable form */
+            overflow-y: auto; /* Enable scroll if content overflows */
+        }
+
+        .form-panel h1 {
+            color: var(--color-blue-primary);
+            margin-bottom: 30px;
+            font-weight: 600;
+        }
+
+        /* --- Input Fields & Selects --- */
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            font-size: 0.95em;
+        }
+
+        input[type="tel"],
+        input[type="password"],
+        input[type="text"],
+        input[type="email"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #E0E0E0;
+            border-radius: var(--border-radius);
+            box-sizing: border-box;
+            font-size: 16px;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--color-blue-primary);
+            box-shadow: 0 0 8px rgba(33, 150, 243, 0.2);
+            outline: none;
+        }
+
+        /* Dynamic fields container style */
+        .dynamic-fields {
+            margin-top: 20px;
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+        }
+
+        /* --- Account Type Selector (Toggle) --- */
+        .account-selector {
+            display: flex;
+            background-color: #F5F5F5;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .selector-btn {
+            flex: 1;
+            padding: 10px 0;
+            text-align: center;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.3s, color 0.3s;
+            border: none;
+            background: none;
+            color: var(--color-text);
+            font-size: 15px;
+        }
+
+        .selector-btn.active {
+            background-color: var(--color-blue-primary);
+            color: var(--color-white);
+            font-weight: 600;
+        }
+
+        /* --- Buttons --- */
+        .btn-signin {
+            width: 100%;
+            padding: 15px;
+            margin-top: 10px;
+            background-color: var(--color-green-primary);
+            color: var(--color-white);
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 10px rgba(76, 175, 80, 0.3);
+        }
+
+        .btn-signin:hover {
+            background-color: #43A047;
+            box-shadow: 0 6px 15px rgba(76, 175, 80, 0.4);
+        }
+
+        /* --- Google Sign-In --- */
+        .divider {
+            text-align: center;
+            margin: 20px 0;
+            color: var(--color-placeholder);
+        }
+
+        .btn-google {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--color-white);
+            color: var(--color-text);
+            border: 2px solid var(--color-blue-primary);
+            border-radius: var(--border-radius);
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s;
+        }
+
+        .btn-google img {
+            width: 20px;
+            margin-right: 10px;
+        }
+        
+        /* --- Responsive Design for smaller screens --- */
+        @media (max-width: 768px) {
+            .signin-container {
+                flex-direction: column;
+                width: 90%;
+            }
+            .visual-panel {
+                display: none;
+            }
+            .form-panel {
+                padding: 30px 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="signin-container">
+        <div class="visual-panel">
+            <i class="fa-solid fa-shield-heart chatbot-icon"></i>
+            <h2>Mediaware AI</h2>
+            <p style="font-size: 1.1em; line-height: 1.6;">
+                Your trusted AI companion for public health. Sign in to access personalized, secure, and health-aware insights.
+            </p>
+        </div>
+
+        <div class="form-panel">
+            <h1>Sign In</h1>
+            <form action="#" method="POST">
+                
+                <label>Sign in as:</label>
+                <div class="account-selector">
+                    <button type="button" class="selector-btn active" data-type="user" id="user-btn">👤 User</button>
+                    <button type="button" class="selector-btn" data-type="hospital" id="hospital-btn">🏥 Hospital</button>
+                    <button type="button" class="selector-btn" data-type="doctor" id="doctor-btn">👨‍⚕️ Doctor</button>
+                </div>
+
+                <div id="dynamic-fields-container" class="dynamic-fields">
+                    <div id="hospital-fields" style="display: none;">
+                        <div class="input-group">
+                            <label for="hospital_name">Hospital Name</label>
+                            <input type="text" id="hospital_name" name="hospital_name" placeholder="e.g., City General Hospital">
+                        </div>
+                        <div class="input-group">
+                            <label for="hospital_contact">Contact Detail (Primary Email/Phone)</label>
+                            <input type="text" id="hospital_contact" name="hospital_contact" placeholder="Email or Phone">
+                        </div>
+                        <div class="input-group">
+                            <label for="hospital_loc_access">Location Access (Address Line)</label>
+                            <input type="text" id="hospital_loc_access" name="hospital_loc_access" placeholder="Full Address / Location Coordinates">
+                        </div>
+                    </div>
+
+                    <div id="doctor-fields" style="display: none;">
+                        <div class="input-group">
+                            <label for="doctor_name">Doctor's Full Name</label>
+                            <input type="text" id="doctor_name" name="doctor_name" placeholder="Dr. Jane Doe">
+                        </div>
+                        <div class="input-group">
+                            <label for="qualifications">Qualifications (e.g., MD, MBBS, DNB)</label>
+                            <input type="text" id="qualifications" name="qualifications" placeholder="List your degrees">
+                        </div>
+                        <div class="input-group">
+                            <label for="work_experience">Work Experience</label>
+                            <textarea id="work_experience" name="work_experience" rows="3" placeholder="Years of practice, specialties, previous roles..."></textarea>
+                        </div>
+                        <div class="input-group">
+                            <label for="doctor_contact">Contact Information (Email or Phone)</label>
+                            <input type="text" id="doctor_contact" name="doctor_contact" placeholder="Official contact info">
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" placeholder="e.g., +91 98765 43210" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="••••••••" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="location">Location (Select State/Region)</label>
+                    <select id="location" name="location" required>
+                        <option value="" disabled selected>Select your State/UT in India</option>
+                        <option value="MH">Maharashtra</option>
+                        <option value="DL">Delhi</option>
+                        <option value="KA">Karnataka</option>
+                        <option value="Other">Other Region</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label for="language">Preferred Language/Dialect</label>
+                    <select id="language" name="language" required>
+                        <option value="" disabled selected>Select your language/dialect</option>
+                        <option value="Hindi">Hindi</option>
+                        <option value="English">English</option>
+                        <option value="Bengali">Bengali</option>
+                        <option value="Marathi">Marathi</option>
+                        <option value="Telugu">Telugu</option>
+                        <option value="Tamil">Tamil</option>
+                        <option value="Bhojpuri">Bhojpuri (Dialect)</option>
+                        <option value="Marwari">Marwari (Dialect)</option>
+                        <option value="Other">Other Language/Dialect</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn-signin">Sign In</button>
+                <p style="text-align: right; margin-top: 10px;">
+                    <a href="#" style="color: var(--color-blue-primary); text-decoration: none; font-size: 0.9em;">Forgot Password?</a>
+                </p>
+
+                <div class="divider">— OR —</div>
+                <button type="button" class="btn-google">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/1024px-Google_%22G%22_logo.svg.png" alt="Google Icon">
+                    Sign in with Google
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const userBtn = document.getElementById('user-btn');
+        const hospitalBtn = document.getElementById('hospital-btn');
+        const doctorBtn = document.getElementById('doctor-btn');
+        const hospitalFields = document.getElementById('hospital-fields');
+        const doctorFields = document.getElementById('doctor-fields');
+        const selectorBtns = document.querySelectorAll('.selector-btn');
+
+        function updateFormFields(type) {
+            // 1. Update button active state
+            selectorBtns.forEach(btn => btn.classList.remove('active'));
+            document.querySelector(`.selector-btn[data-type="${type}"]`).classList.add('active');
+
+            // 2. Hide all dynamic fields
+            hospitalFields.style.display = 'none';
+            doctorFields.style.display = 'none';
+
+            // 3. Show relevant dynamic fields and set required attribute
+            if (type === 'hospital') {
+                hospitalFields.style.display = 'block';
+                // Note: In a real application, you'd set 'required' attributes here
+                // Example: document.getElementById('hospital_name').setAttribute('required', 'true');
+            } else if (type === 'doctor') {
+                doctorFields.style.display = 'block';
+                // Example: document.getElementById('doctor_name').setAttribute('required', 'true');
+            }
+        }
+
+        // Event Listeners for the type selector buttons
+        userBtn.addEventListener('click', () => updateFormFields('user'));
+        hospitalBtn.addEventListener('click', () => updateFormFields('hospital'));
+        doctorBtn.addEventListener('click', () => updateFormFields('doctor'));
+
+        // Initialize form fields to the default 'user' state
+        document.addEventListener('DOMContentLoaded', () => {
+            updateFormFields('user');
+        });
+    </script>
+</body>
+</html>

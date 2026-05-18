@@ -1,0 +1,1873 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediAware AI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #e0f2f1, #e3f2fd, #f1f8e9);
+            background-size: 400% 400%;
+            animation: gradient-animation 15s ease infinite;
+            color: #1a202c;
+        }
+        @keyframes gradient-animation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+        .scrollbar-hide {
+            -ms-overflow-style: none; /* IE and Edge */
+            scrollbar-width: none; /* Firefox */
+        }
+        .active-tab {
+            background-color: #ffffff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            color: #0d9488;
+        }
+        .active-tab a {
+            color: #0d9488 !important;
+        }
+        .active-tab a i {
+            color: #0d9488 !important;
+        }
+    </style>
+</head>
+<body class="flex min-h-screen">
+
+    <!-- Sidebar -->
+    <aside id="sidebar" class="w-64 bg-white p-6 shadow-xl z-30 transition-transform transform -translate-x-full lg:translate-x-0 fixed inset-y-0 left-0 flex flex-col justify-between">
+        <div>
+            <div class="flex items-center gap-3 mb-8">
+                <i class="fa-solid fa-notes-medical text-3xl text-teal-600"></i>
+                <h1 class="text-2xl font-bold text-gray-900">MediAware AI</h1>
+            </div>
+            <nav>
+                <ul class="space-y-2">
+                    <li class="sidebar-item" data-target="home">
+                        <a href="#" class="flex items-center gap-4 p-3 rounded-xl hover:bg-gray-100 transition-colors">
+                            <i class="fa-solid fa-house text-lg w-6 text-gray-500"></i>
+                            <span class="font-medium text-gray-700">Home</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item" data-target="symptom-checker">
+                        <a href="#" class="flex items-center gap-4 p-3 rounded-xl hover:bg-gray-100 transition-colors">
+                            <i class="fa-solid fa-stethoscope text-lg w-6 text-gray-500"></i>
+                            <span class="font-medium text-gray-700">Symptom Checker</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item" data-target="nutrition">
+                        <a href="#" class="flex items-center gap-4 p-3 rounded-xl hover:bg-gray-100 transition-colors">
+                            <i class="fa-solid fa-utensils text-lg w-6 text-gray-500"></i>
+                            <span class="font-medium text-gray-700">Nutrition</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item" data-target="mental-health">
+                        <a href="#" class="flex items-center gap-4 p-3 rounded-xl hover:bg-gray-100 transition-colors">
+                            <i class="fa-solid fa-brain text-lg w-6 text-gray-500"></i>
+                            <span class="font-medium text-gray-700">Mental Health</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item" data-target="fitness">
+                        <a href="#" class="flex items-center gap-4 p-3 rounded-xl hover:bg-gray-100 transition-colors">
+                            <i class="fa-solid fa-dumbbell text-lg w-6 text-gray-500"></i>
+                            <span class="font-medium text-gray-700">Fitness</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item" data-target="vaccination">
+                        <a href="#" class="flex items-center gap-4 p-3 rounded-xl hover:bg-gray-100 transition-colors">
+                            <i class="fa-solid fa-syringe text-lg w-6 text-gray-500"></i>
+                            <span class="font-medium text-gray-700">Vaccination</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item" data-target="diseases">
+                        <a href="#" class="flex items-center gap-4 p-3 rounded-xl hover:bg-gray-100 transition-colors">
+                            <i class="fa-solid fa-bacterium text-lg w-6 text-gray-500"></i>
+                            <span class="font-medium text-gray-700">Diseases Info</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item active-tab" data-target="emergency">
+                        <a href="#" class="flex items-center gap-4 p-3 rounded-xl hover:bg-gray-100 transition-colors">
+                            <i class="fa-solid fa-truck-medical text-lg w-6 text-gray-500"></i>
+                            <span class="font-medium text-gray-700">Emergency</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item" data-target="resources">
+                        <a href="#" class="flex items-center gap-4 p-3 rounded-xl hover:bg-gray-100 transition-colors">
+                            <i class="fa-solid fa-book-medical text-lg w-6 text-gray-500"></i>
+                            <span class="font-medium text-gray-700">Resources</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <div class="p-4 text-center text-gray-500 text-xs">
+            © 2024 MediAware AI. All rights reserved.
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="flex-grow p-4 lg:ml-64 transition-all duration-300">
+        <!-- Overlay for mobile menu -->
+        <div id="sidebar-overlay" class="fixed inset-0 bg-black opacity-50 z-20 lg:hidden hidden"></div>
+
+        <!-- Header -->
+        <header class="bg-white p-4 rounded-xl shadow-md flex items-center justify-between mb-6">
+            <button id="sidebar-toggle" class="lg:hidden p-2 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors">
+                <i class="fa-solid fa-bars text-xl"></i>
+            </button>
+            <div class="hidden lg:flex items-center gap-2">
+                <i class="fa-solid fa-notes-medical text-2xl text-teal-600"></i>
+                <h1 class="text-xl font-bold text-gray-900">MediAware AI</h1>
+            </div>
+            <div class="relative flex-grow mx-4">
+                <input type="text" placeholder="Search for health info..." class="w-full pl-10 pr-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-teal-400">
+                <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+            </div>
+            <div class="flex items-center gap-4">
+                <button class="text-gray-500 hover:text-gray-700 transition-colors">
+                    <i class="fa-solid fa-bell text-xl"></i>
+                </button>
+                <button class="text-gray-500 hover:text-gray-700 transition-colors">
+                    <i class="fa-solid fa-user-circle text-xl"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Floating SOS button -->
+        <button id="floating-sos" class="fixed bottom-6 right-6 lg:right-10 w-16 h-16 bg-red-600 text-white rounded-full shadow-2xl flex items-center justify-center text-2xl animate-pulse hover:bg-red-700 transition-colors z-40">
+            <i class="fa-solid fa-phone"></i>
+        </button>
+
+        <div class="content-section hidden" id="home">
+            <div class="bg-white p-8 rounded-2xl shadow-md border border-gray-200 text-center">
+                <h2 class="text-3xl font-semibold mb-2 text-gray-800">Welcome Home!</h2>
+                <p class="text-gray-600">This is the home screen. Navigate using the menu on the left.</p>
+            </div>
+            <div class="mt-8 bg-white p-8 rounded-2xl shadow-md border border-gray-200">
+                <h2 class="text-3xl font-semibold mb-4 text-gray-800 text-center">Trending Diseases (Global & India)</h2>
+                <p class="text-gray-600 mb-6 text-center">Here is a brief overview of some current global and regional health concerns, based on a recent snapshot of public health data.</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="bg-gray-50 p-6 rounded-2xl border border-gray-200">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Global Health Concerns</h3>
+                        <ul class="list-disc list-inside space-y-2 text-gray-600">
+                            <li class="cursor-pointer hover:underline" data-disease="Cholera"><span class="font-medium">Cholera:</span> Ongoing outbreaks in several countries, particularly in Africa and the Middle East, due to a lack of safe drinking water and sanitation.</li>
+                            <li class="cursor-pointer hover:underline" data-disease="Dengue Fever"><span class="font-medium">Dengue Fever:</span> A growing global threat, with increasing incidence in tropical and subtropical regions.</li>
+                            <li class="cursor-pointer hover:underline" data-disease="Malaria"><span class="font-medium">Malaria:</span> A persistent public health challenge, with efforts focused on prevention and control.</li>
+                            <li class="cursor-pointer hover:underline" data-disease="NCDs"><span class="font-medium">Non-Communicable Diseases (NCDs):</span> Conditions like cardiovascular diseases, diabetes, and cancers remain the leading causes of death worldwide.</li>
+                        </ul>
+                    </div>
+                    <div class="bg-gray-50 p-6 rounded-2xl border border-gray-200">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Health Concerns in India</h3>
+                        <ul class="list-disc list-inside space-y-2 text-gray-600">
+                            <li class="cursor-pointer hover:underline" data-disease="Zika Virus"><span class="font-medium">Zika Virus:</span> Recent outbreaks in several states, with a focus on surveillance and vector control.</li>
+                            <li class="cursor-pointer hover:underline" data-disease="Nipah Virus"><span class="font-medium">Nipah Virus:</span> Recurrent outbreaks, particularly in Kerala, highlighting the importance of rapid response and public awareness.</li>
+                            <li class="cursor-pointer hover:underline" data-disease="Tuberculosis"><span class="font-medium">Tuberculosis (TB):</span> India has a high burden of TB, and efforts are ongoing to reduce incidence and mortality.</li>
+                            <li class="cursor-pointer hover:underline" data-disease="Dengue Fever"><span class="font-medium">Dengue Fever:</span> Like in other tropical regions, dengue remains a significant and recurring threat in India.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="bg-yellow-100 p-4 rounded-xl mt-6 text-gray-700 border border-yellow-200">
+                    <p class="font-semibold text-orange-600 mb-1">Note:</p>
+                    <p class="text-sm">The information above is for demonstration purposes. For the most recent and official updates on disease outbreaks and health emergencies, please visit the World Health Organization's official website.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section hidden" id="symptom-checker">
+            <div class="bg-white p-8 rounded-2xl shadow-md border border-gray-200">
+                <h2 class="text-3xl font-semibold mb-6 text-gray-800 text-center">Symptom Checker</h2>
+                <div class="flex flex-col space-y-4 max-h-96 overflow-y-auto scrollbar-hide mb-4" id="chat-history">
+                    <div class="flex items-start">
+                        <div class="bg-teal-50 p-4 rounded-b-2xl rounded-tr-2xl shadow-sm max-w-sm">
+                            <p class="text-gray-800">Hello! I'm your health assistant. How can I help you today?</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="input-area">
+                    <div class="flex gap-4 items-end mt-6">
+                        <div class="relative flex-grow">
+                            <textarea id="chat-input" class="w-full p-4 pr-12 text-gray-700 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-teal-400 resize-none overflow-hidden" placeholder="Type a message..." rows="1"></textarea>
+                            <i class="fa-solid fa-microphone absolute right-4 bottom-4 text-gray-400 text-lg cursor-pointer hover:text-gray-600"></i>
+                        </div>
+                        <button id="send-button" class="bg-teal-600 text-white p-4 rounded-xl hover:bg-teal-700 transition-colors shadow-md">
+                            <i class="fa-solid fa-paper-plane"></i>
+                        </button>
+                    </div>
+                    <div class="bg-yellow-100 p-4 rounded-xl mt-6 text-gray-700 border border-yellow-200">
+                        <p class="font-semibold text-orange-600 mb-1">Disclaimer:</p>
+                        <p class="text-sm">This app is for informational purposes only and is not a substitute for professional medical advice, diagnosis, or treatment. Always seek the advice of your physician or other qualified health provider with any questions you may have regarding a medical condition.</p>
+                    </div>
+                </div>
+
+                <div id="recommendations" class="hidden mt-8 space-y-6">
+                    <div class="bg-gray-50 p-6 rounded-2xl border border-gray-200">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Health Recommendations</h3>
+                        <p class="text-gray-700">Based on the information you provided, here are some recommendations.</p>
+                        <p class="text-sm font-semibold text-red-600 mt-2">Always consult a professional for a proper diagnosis.</p>
+                    </div>
+                    <div class="bg-yellow-50 p-6 rounded-2xl border border-yellow-200">
+                        <h3 class="text-xl font-semibold text-yellow-800 mb-4">Home Remedies and Preventive Measures</h3>
+                        <div id="home-remedies-content" class="text-gray-700">
+                            <!-- Content will be injected here dynamically -->
+                        </div>
+                    </div>
+                    <div class="bg-blue-50 p-6 rounded-2xl border border-blue-200">
+                        <h3 class="text-xl font-semibold text-blue-800 mb-4">Connect to Telehealth</h3>
+                        <p class="text-blue-700 mb-4">You can connect with a medical professional online for a consultation or more information. Click on the links below to learn more about telehealth services from official sources.</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <a href="https://www.who.int/emergencies/telehealth-resources" target="_blank" class="flex items-center gap-3 p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow">
+                                <i class="fa-solid fa-link text-blue-600"></i>
+                                <span class="text-gray-800 font-medium">WHO Telehealth Resources</span>
+                            </a>
+                            <a href="https://www.unicef.org/health" target="_blank" class="flex items-center gap-3 p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow">
+                                <i class="fa-solid fa-link text-blue-600"></i>
+                                <span class="text-gray-800 font-medium">UNICEF Health Portal</span>
+                            </a>
+                            <a href="https://www.aarogyasetu.gov.in" target="_blank" class="flex items-center gap-3 p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow">
+                                <i class="fa-solid fa-link text-blue-600"></i>
+                                <span class="text-gray-800 font-medium">Aarogya Setu Official Site</span>
+                            </a>
+                            <a href="https://www.mohfw.gov.in/" target="_blank" class="flex items-center gap-3 p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow">
+                                <i class="fa-solid fa-link text-blue-600"></i>
+                                <span class="text-gray-800 font-medium">Ministry of Health & Family Welfare (MoHFW), India</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="bg-green-50 p-6 rounded-2xl border border-green-200 text-center">
+                        <h3 class="text-xl font-semibold text-green-800 mb-4">Find Nearest Hospital</h3>
+                        <p class="text-green-700 mb-4">For immediate medical attention, please click the button below to find the nearest hospital to your current location.</p>
+                        <a href="https://www.google.com/maps/search/hospitals+near+me" target="_blank" class="inline-block bg-green-600 text-white px-6 py-3 rounded-xl font-medium hover:bg-green-700 transition-colors shadow-lg">Find Nearest Hospital</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section hidden" id="nutrition">
+            <div class="bg-white p-8 rounded-2xl shadow-md border border-gray-200">
+                <h2 class="text-3xl font-semibold mb-6 text-gray-800 text-center">Nutrition</h2>
+                <!-- Tab Buttons -->
+                <div class="flex justify-around bg-gray-100 rounded-xl p-2 mb-8" id="nutrition-tabs">
+                    <button class="flex-1 py-3 px-4 rounded-xl font-medium text-gray-700 hover:bg-white transition-colors nutrition-tab-button active-tab" data-target="diet-plans">Diet Plans</button>
+                    <button class="flex-1 py-3 px-4 rounded-xl font-medium text-gray-700 hover:bg-white transition-colors nutrition-tab-button" data-target="food-groups">Food Groups</button>
+                    <button class="flex-1 py-3 px-4 rounded-xl font-medium text-gray-700 hover:bg-white transition-colors nutrition-tab-button" data-target="calories-portions">Calories & Portions</button>
+                </div>
+                
+                <!-- Tab Content -->
+                <div id="nutrition-content-container">
+                    <div id="diet-plans" class="nutrition-content-tab">
+                        <h3 class="text-xl font-semibold mb-2">Explore Our Diet Plans</h3>
+                        <p class="text-gray-600 mb-4">Find a plan that fits your lifestyle, whether you're looking to lose weight, gain muscle, or simply eat healthier.</p>
+                        <div class="space-y-4">
+                            <!-- Mediterranean Diet -->
+                            <div class="p-6 bg-gray-50 rounded-xl border border-gray-200">
+                                <h4 class="text-lg font-semibold text-gray-800">Mediterranean Diet</h4>
+                                <p class="text-gray-600 mt-2">Emphasizes plant-based foods, healthy fats, and fish. It's associated with a lower risk of heart disease and stroke.</p>
+                                <ul class="list-disc list-inside text-gray-600 mt-2">
+                                    <li>Focus: Fruits, vegetables, whole grains, nuts, seeds, and olive oil.</li>
+                                    <li>Moderation: Poultry, eggs, cheese, and yogurt.</li>
+                                    <li>Limited: Red meat and sweets.</li>
+                                </ul>
+                            </div>
+                            <!-- DASH Diet -->
+                            <div class="p-6 bg-gray-50 rounded-xl border border-gray-200">
+                                <h4 class="text-lg font-semibold text-gray-800">DASH Diet</h4>
+                                <p class="text-gray-600 mt-2">Designed to lower high blood pressure. It is low in sodium and rich in nutrients that help lower blood pressure, such as potassium, calcium, and magnesium.</p>
+                                <ul class="list-disc list-inside text-gray-600 mt-2">
+                                    <li>Focus: Whole grains, fruits, vegetables, and low-fat dairy.</li>
+                                    <li>Limited: Sodium, saturated fats, and sugar.</li>
+                                </ul>
+                            </div>
+                            <!-- Vegan Diet -->
+                            <div class="p-6 bg-gray-50 rounded-xl border border-gray-200">
+                                <h4 class="text-lg font-semibold text-gray-800">Vegan Diet</h4>
+                                <p class="text-gray-600 mt-2">Excludes all animal products, including meat, dairy, and eggs. It's often high in fiber, vitamins, and plant-based protein.</p>
+                                <ul class="list-disc list-inside text-gray-600 mt-2">
+                                    <li>Focus: Fruits, vegetables, grains, legumes, and nuts.</li>
+                                    <li>Limited: All animal products.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="food-groups" class="nutrition-content-tab hidden">
+                        <h3 class="text-xl font-semibold mb-2">Understanding Food Groups</h3>
+                        <p class="text-gray-600 mb-4">A balanced diet includes foods from all major food groups to provide a wide range of essential nutrients.</p>
+                        <div class="space-y-4">
+                            <!-- Grains -->
+                            <div class="p-6 bg-gray-50 rounded-xl border border-gray-200">
+                                <h4 class="text-lg font-semibold text-gray-800">Grains</h4>
+                                <p class="text-gray-600 mt-2">The body's main source of energy. Choose **whole grains** like brown rice, oats, and whole wheat bread for more fiber and nutrients.</p>
+                                <ul class="list-disc list-inside text-gray-600 mt-2">
+                                    <li>**Whole Grains:** Brown rice, quinoa, oatmeal, whole-wheat bread, and barley.</li>
+                                    <li>**Refined Grains:** White bread, white rice, and many pastas. Limit these as they have fewer nutrients.</li>
+                                </ul>
+                            </div>
+                            <!-- Fruits & Vegetables -->
+                            <div class="p-6 bg-gray-50 rounded-xl border border-gray-200">
+                                <h4 class="text-lg font-semibold text-gray-800">Fruits & Vegetables</h4>
+                                <p class="text-gray-600 mt-2">Packed with vitamins, minerals, and antioxidants. Aim for a variety of colors to get a broad spectrum of nutrients.</p>
+                                <ul class="list-disc list-inside text-gray-600 mt-2">
+                                    <li>**Vegetables:** Leafy greens (spinach, kale), cruciferous vegetables (broccoli, cauliflower), root vegetables (carrots, potatoes).</li>
+                                    <li>**Fruits:** Berries, apples, bananas, oranges, and mangoes.</li>
+                                </ul>
+                            </div>
+                            <!-- Protein -->
+                            <div class="p-6 bg-gray-50 rounded-xl border border-gray-200">
+                                <h4 class="text-lg font-semibold text-gray-800">Protein</h4>
+                                <p class="text-gray-600 mt-2">Essential for building and repairing tissues. A balanced intake of both animal and plant-based protein is important.</p>
+                                <ul class="list-disc list-inside text-gray-600 mt-2">
+                                    <li>**Animal-Based:** Lean meats (chicken, turkey), fish (salmon, tuna), and eggs.</li>
+                                    <li>**Plant-Based:** Beans, lentils, chickpeas, tofu, and nuts.</li>
+                                </ul>
+                            </div>
+                            <!-- Dairy & Alternatives -->
+                            <div class="p-6 bg-gray-50 rounded-xl border border-gray-200">
+                                <h4 class="text-lg font-semibold text-gray-800">Dairy & Alternatives</h4>
+                                <p class="text-gray-600 mt-2">Important for bone health due to their high calcium content. Choose low-fat options or fortified plant-based alternatives.</p>
+                                <ul class="list-disc list-inside text-gray-600 mt-2">
+                                    <li>**Dairy:** Milk, cheese, and yogurt.</li>
+                                    <li>**Alternatives:** Almond milk, soy milk, oat milk, and fortified juices.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="calories-portions" class="nutrition-content-tab hidden">
+                        <h3 class="text-xl font-semibold mb-2">Calorie & Portion Control</h3>
+                        <p class="text-gray-600 mb-4">Managing your calorie intake and portion sizes is key to maintaining a healthy weight. Here's a simple guide:</p>
+                        <div class="space-y-4">
+                            <!-- Calories -->
+                            <div class="p-6 bg-gray-50 rounded-xl border border-gray-200">
+                                <h4 class="text-lg font-semibold text-gray-800">Understanding Calories</h4>
+                                <p class="text-gray-600 mt-2">Calories are a measure of energy. The daily recommended intake varies based on age, sex, and activity level. On average, an adult requires between 2,000 to 2,500 calories per day.</p>
+                            </div>
+                            <!-- Portions -->
+                            <div class="p-6 bg-gray-50 rounded-xl border border-gray-200">
+                                <h4 class="text-lg font-semibold text-gray-800">Simple Portion Guide</h4>
+                                <p class="text-gray-600 mt-2">Use these simple visual cues to manage your portions without counting:</p>
+                                <ul class="list-disc list-inside text-gray-600 mt-2">
+                                    <li><span class="font-medium">Protein:</span> A portion should be about the size of your palm.</li>
+                                    <li><span class="font-medium">Carbohydrates:</span> A portion of rice or pasta should fit in your cupped hand.</li>
+                                    <li><span class="font-medium">Vegetables:</span> A portion is roughly the size of your fist.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section hidden" id="mental-health">
+            <div class="bg-white p-8 rounded-2xl shadow-md border border-gray-200">
+                <h2 class="text-3xl font-semibold mb-6 text-gray-800 text-center">Mental Wellness</h2>
+                
+                <!-- Mental Health Home View -->
+                <div id="mental-health-home">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Guided Meditation Card -->
+                        <div class="bg-blue-50 p-6 rounded-2xl border border-blue-200">
+                            <h3 class="text-xl font-semibold text-blue-800 mb-2">Guided Meditation</h3>
+                            <p class="text-blue-700 mb-4">Find your inner calm with a 5-minute guided meditation. Focus on your breathing and let go of stress.</p>
+                            <button class="bg-blue-600 text-white px-6 py-3 rounded-xl font-medium hover:bg-blue-700 transition-colors shadow-lg" id="show-meditation">Start Meditation</button>
+                        </div>
+                        <!-- Mood Tracker Card -->
+                        <div class="bg-green-50 p-6 rounded-2xl border border-green-200">
+                            <h3 class="text-xl font-semibold text-green-800 mb-2">Mood Tracker</h3>
+                            <p class="text-green-700 mb-4">Log your mood daily to recognize patterns and triggers. This can help you better understand your emotional well-being.</p>
+                            <button class="bg-green-600 text-white px-6 py-3 rounded-xl font-medium hover:bg-green-700 transition-colors shadow-lg" id="show-mood-tracker">Log My Mood</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mental Health Detailed View -->
+                <div id="mental-health-detail" class="hidden">
+                    <button id="back-to-mh-home" class="mb-4 text-gray-500 hover:text-gray-700">
+                        <i class="fa-solid fa-arrow-left mr-2"></i> Back
+                    </button>
+
+                    <!-- Guided Meditation Features -->
+                    <div id="meditation-content" class="space-y-6 hidden">
+                        <div class="bg-blue-50 p-6 rounded-2xl border border-blue-200">
+                            <h3 class="text-xl font-semibold text-blue-800 mb-4">Core Meditation Features</h3>
+                            <ul class="list-disc list-inside space-y-2 text-blue-700">
+                                <li><strong>Guided Meditation Sessions:</strong> Voice-guided instructions (calm voice, background music). Options for beginners, intermediate, and advanced users.</li>
+                                <li><strong>Breathing Exercises:</strong> Visual breathing guides (inhale/exhale animations) for methods like box breathing and the 4-7-8 method.</li>
+                                <li><strong>Background Sounds:</strong> Choose from nature sounds (rain, forest, ocean waves), white noise, or instrumental music.</li>
+                            </ul>
+                        </div>
+                        
+                        <!-- New Timer Section -->
+                        <div class="bg-blue-50 p-6 rounded-2xl border border-blue-200">
+                            <h3 class="text-xl font-semibold text-blue-800 mb-4">Timer & Custom Duration</h3>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <button class="timer-button px-4 py-2 rounded-full border border-blue-600 text-blue-700 hover:bg-blue-600 hover:text-white transition-colors" data-minutes="5">5 min</button>
+                                <button class="timer-button px-4 py-2 rounded-full border border-blue-600 text-blue-700 hover:bg-blue-600 hover:text-white transition-colors" data-minutes="10">10 min</button>
+                                <button class="timer-button px-4 py-2 rounded-full border border-blue-600 text-blue-700 hover:bg-blue-600 hover:text-white transition-colors" data-minutes="15">15 min</button>
+                                <button class="timer-button px-4 py-2 rounded-full border border-blue-600 text-blue-700 hover:bg-blue-600 hover:text-white transition-colors" data-minutes="30">30 min</button>
+                            </div>
+                            <div class="text-blue-700 text-center mb-4">
+                                <p id="timer-display" class="text-4xl font-bold">00:00</p>
+                            </div>
+                            <div class="text-blue-700">
+                                <label for="custom-timer" class="block mb-2 font-medium">Custom Timer (in minutes):</label>
+                                <input type="number" id="custom-timer" min="1" max="60" value="5" class="w-full p-2 rounded-xl border border-blue-300">
+                                <div class="flex gap-4 mt-4">
+                                    <button id="start-custom-timer" class="flex-1 bg-blue-600 text-white px-6 py-3 rounded-xl font-medium hover:bg-blue-700 transition-colors shadow-lg">Start</button>
+                                    <button id="reset-custom-timer" class="flex-1 bg-gray-400 text-white px-6 py-3 rounded-xl font-medium hover:bg-gray-500 transition-colors shadow-lg">Reset</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- New Meditation Exercises Section -->
+                        <div class="bg-gray-50 p-6 rounded-2xl border border-gray-200">
+                            <h3 class="text-xl font-semibold text-gray-800 mb-4">Meditation Exercises</h3>
+                            <p class="text-gray-700 mb-4">Here are some popular meditation exercises to try:</p>
+                            <ul class="list-disc list-inside space-y-2 text-gray-700">
+                                <li>
+                                    <strong>Mindful Breathing:</strong> Focus your attention on the sensation of your breath as it enters and leaves your body.
+                                </li>
+                                <li>
+                                    <strong>Body Scan:</strong> Mentally scan your body, from head to toe, and notice any sensations of tension or relaxation.
+                                </li>
+                                <li>
+                                    <strong>Loving-Kindness Meditation:</strong> Cultivate feelings of compassion and kindness towards yourself and others.
+                                </li>
+                                <li>
+                                    <strong>Walking Meditation:</strong> Pay close attention to the physical sensations of walking, such as the movement of your feet and legs.
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="bg-gray-50 p-6 rounded-2xl border border-gray-200">
+                            <h3 class="text-xl font-semibold text-gray-800 mb-4">🌿 Personalization</h3>
+                            <ul class="list-disc list-inside space-y-2 text-gray-700">
+                                <li><strong>Mood-based Meditation:</strong> Choose a meditation based on your current mood: stress, anxiety, focus, sleep, or gratitude.</li>
+                                <li><strong>Daily Recommendations:</strong> Get suggestions for a meditation type based on your mood or time of day.</li>
+                                <li><strong>Streak & Progress Tracker:</strong> Track how many days you have meditated and see your total hours spent meditating.</li>
+                                <li><strong>Reminders & Notifications:</strong> Set gentle reminders to meditate at your preferred times.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Mood Tracker Features -->
+                    <div id="mood-tracker-content" class="space-y-6 hidden">
+                        <div class="bg-green-50 p-6 rounded-2xl border border-green-200">
+                            <h3 class="text-xl font-semibold text-green-800 mb-4">Log Your Mood</h3>
+                            <div class="space-y-4">
+                                <div>
+                                    <p class="text-green-700 font-medium mb-2">Quick Mood Selection</p>
+                                    <div class="flex flex-wrap gap-2 text-3xl">
+                                        <span class="mood-emoji cursor-pointer p-2 rounded-full hover:scale-110 transition-transform" data-mood="Happy">😊</span>
+                                        <span class="mood-emoji cursor-pointer p-2 rounded-full hover:scale-110 transition-transform" data-mood="Sad">😟</span>
+                                        <span class="mood-emoji cursor-pointer p-2 rounded-full hover:scale-110 transition-transform" data-mood="Stressed">😤</span>
+                                        <span class="mood-emoji cursor-pointer p-2 rounded-full hover:scale-110 transition-transform" data-mood="Tired">😴</span>
+                                        <span class="mood-emoji cursor-pointer p-2 rounded-full hover:scale-110 transition-transform" data-mood="Angry">😡</span>
+                                        <span class="mood-emoji cursor-pointer p-2 rounded-full hover:scale-110 transition-transform" data-mood="Loved">😍</span>
+                                        <span class="mood-emoji cursor-pointer p-2 rounded-full hover:scale-110 transition-transform" data-mood="Calm">😌</span>
+                                        <input type="text" placeholder="Custom Mood" class="w-full p-2 mt-2 rounded-xl border border-gray-300">
+                                    </div>
+                                </div>
+                                <div>
+                                    <p class="text-green-700 font-medium mb-2">Mood Intensity</p>
+                                    <input type="range" min="1" max="10" value="5" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+                                </div>
+                                <div>
+                                    <p class="text-green-700 font-medium mb-2">Reason for Mood (Optional)</p>
+                                    <div class="flex flex-wrap gap-2 mb-2">
+                                        <span class="mood-tag px-3 py-1 rounded-full text-sm cursor-pointer bg-green-200 text-green-800 hover:bg-green-300 transition-colors" data-tag="work">work</span>
+                                        <span class="mood-tag px-3 py-1 rounded-full text-sm cursor-pointer bg-green-200 text-green-800 hover:bg-green-300 transition-colors" data-tag="relationship">relationship</span>
+                                        <span class="mood-tag px-3 py-1 rounded-full text-sm cursor-pointer bg-green-200 text-green-800 hover:bg-green-300 transition-colors" data-tag="health">health</span>
+                                        <span class="mood-tag px-3 py-1 rounded-full text-sm cursor-pointer bg-green-200 text-green-800 hover:bg-green-300 transition-colors" data-tag="study">study</span>
+                                        <span class="mood-tag px-3 py-1 rounded-full text-sm cursor-pointer bg-green-200 text-green-800 hover:bg-green-300 transition-colors" data-tag="family">family</span>
+                                        <span class="mood-tag px-3 py-1 rounded-full text-sm cursor-pointer bg-green-200 text-green-800 hover:bg-green-300 transition-colors" data-tag="random">random</span>
+                                    </div>
+                                    <textarea placeholder="Write about your day..." class="w-full p-2 mt-2 rounded-xl border border-gray-300"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-gray-50 p-6 rounded-2xl border border-gray-200">
+                            <h3 class="text-xl font-semibold text-gray-800 mb-4">📊 Mood Insights</h3>
+                            <div class="space-y-4 text-gray-700">
+                                <div>
+                                    <p class="font-medium">Mood History & Trends:</p>
+                                    <p class="text-sm">See a graph or calendar view of your mood changes over time, with weekly/monthly reports to help you track your progress.</p>
+                                </div>
+                                <div>
+                                    <p class="font-medium">Correlation with Meditation:</p>
+                                    <p class="text-sm">Learn how your moods improve after meditation sessions. For example: "On days you meditate, stress drops by 40%."</p>
+                                </div>
+                                <div>
+                                    <p class="font-medium">Mood-based Suggestions:</p>
+                                    <p class="text-sm">Receive personalized suggestions, such as a breathing meditation if you're feeling stressed or a gratitude meditation when you're sad.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section hidden" id="fitness">
+            <div class="bg-white p-8 rounded-2xl shadow-md border border-gray-200">
+                <h2 class="text-3xl font-semibold mb-6 text-gray-800 text-center">Fitness & Activity</h2>
+                <div class="space-y-6">
+                    <!-- Daily Step Goal Card -->
+                    <div class="bg-red-50 p-6 rounded-2xl border border-red-200">
+                        <h3 class="text-xl font-semibold text-red-800 mb-2">Daily Step Goal</h3>
+                        <p class="text-red-700 mb-4">Track your steps and stay motivated to hit your daily goal of 10,000 steps.</p>
+                        <div class="w-full bg-gray-200 rounded-full h-3.5 mb-2">
+                            <div class="bg-red-500 h-3.5 rounded-full" style="width: 50%;"></div>
+                        </div>
+                        <p class="text-sm font-semibold text-red-700 text-right">5,000 / 10,000 steps</p>
+                        <div class="mt-4 text-center">
+                            <button class="bg-red-600 text-white px-6 py-3 rounded-xl font-medium hover:bg-red-700 transition-colors shadow-lg">Connect to Smartwatch</button>
+                            <p class="text-xs text-gray-500 mt-2">Connecting will sync your daily step count automatically.</p>
+                        </div>
+                    </div>
+                    <!-- Workout Plan Card -->
+                    <div class="bg-purple-50 p-6 rounded-2xl border border-purple-200">
+                        <h3 class="text-xl font-semibold text-purple-800 mb-2">Workout Plan</h3>
+                        <p class="text-purple-700 mb-4">Access a personalized workout plan tailored to your fitness level and goals. Stay active, stay healthy!</p>
+                        <div class="flex justify-around bg-gray-100 rounded-xl p-2 mb-4" id="workout-tabs">
+                            <button class="flex-1 py-2 px-3 rounded-xl font-medium text-gray-700 hover:bg-white transition-colors workout-tab-button active-tab" data-target="children-plan">Children</button>
+                            <button class="flex-1 py-2 px-3 rounded-xl font-medium text-gray-700 hover:bg-white transition-colors workout-tab-button" data-target="adults-plan">Adults</button>
+                            <button class="flex-1 py-2 px-3 rounded-xl font-medium text-gray-700 hover:bg-white transition-colors workout-tab-button" data-target="elderly-plan">Old Aged People</button>
+                        </div>
+                        <div id="workout-content-container">
+                            <div id="children-plan" class="workout-content-tab">
+                                <h4 class="text-lg font-semibold text-purple-800 mb-2">Fun & Active Plans for Kids</h4>
+                                <p class="text-purple-700">Encourage healthy habits through play and exploration. The focus should be on building fundamental movement skills and having fun.</p>
+                                <div class="mt-4">
+                                    <h5 class="font-bold text-purple-700 mb-1">Weekly Schedule:</h5>
+                                    <ul class="list-disc list-inside text-purple-700 space-y-1">
+                                        <li>**Monday, Wednesday, Friday:** Structured Play (e.g., jumping jacks, running races, hopscotch for 30 minutes).</li>
+                                        <li>**Tuesday, Thursday:** Outdoor Activities (e.g., cycling, playing tag, exploring a park for 45 minutes).</li>
+                                        <li>**Saturday, Sunday:** Free Play (e.g., family hike, swimming, or sports games for 60+ minutes).</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div id="adults-plan" class="workout-content-tab hidden">
+                                <h4 class="text-lg font-semibold text-purple-800 mb-2">Balanced Fitness for Adults</h4>
+                                <p class="text-purple-700">A well-rounded plan includes a mix of cardio, strength, and flexibility to maintain a healthy weight and reduce the risk of chronic diseases.</p>
+                                <div class="mt-4">
+                                    <h5 class="font-bold text-purple-700 mb-1">Weekly Schedule:</h5>
+                                    <ul class="list-disc list-inside text-purple-700 space-y-1">
+                                        <li>**Monday:** Strength Training (Upper Body) + 20 min Cardio.</li>
+                                        <li>**Tuesday:** Moderate Cardio (e.g., brisk walk, jogging for 30-40 min).</li>
+                                        <li>**Wednesday:** Strength Training (Lower Body) + 20 min Cardio.</li>
+                                        <li>**Thursday:** Active Recovery (e.g., yoga, stretching, or light walk for 30 min).</li>
+                                        <li>**Friday:** Full Body Strength + 20 min Cardio.</li>
+                                        <li>**Saturday:** Long Cardio Session (e.g., hiking, cycling, or jogging for 45-60 min).</li>
+                                        <li>**Sunday:** Rest or light activity.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div id="elderly-plan" class="workout-content-tab hidden">
+                                <h4 class="text-lg font-semibold text-purple-800 mb-2">Gentle & Safe Exercises for Seniors</h4>
+                                <p class="text-purple-700">Focus on maintaining mobility, balance, and muscle mass with low-impact exercises that are easy on the joints.</p>
+                                <div class="mt-4">
+                                    <h5 class="font-bold text-purple-700 mb-1">Weekly Schedule:</h5>
+                                    <ul class="list-disc list-inside text-purple-700 space-y-1">
+                                        <li>**Monday, Wednesday, Friday:** Strength and Balance (e.g., chair squats, leg raises, wall push-ups for 20-30 minutes).</li>
+                                        <li>**Tuesday, Thursday, Saturday:** Low-Impact Cardio (e.g., brisk walking, water aerobics, or tai chi for 30 minutes).</li>
+                                        <li>**Sunday:** Rest or light stretching.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section hidden" id="vaccination">
+            <div class="bg-white p-8 rounded-2xl shadow-md border border-gray-200">
+                <h2 class="text-3xl font-semibold mb-6 text-gray-800 text-center">Vaccination Information</h2>
+                <div class="space-y-6">
+
+                    <!-- General Vaccine Info -->
+                    <div class="accordion-item bg-gray-100 rounded-xl border border-gray-200">
+                        <button class="accordion-header w-full flex items-center justify-between p-4 rounded-xl hover:bg-gray-200 transition-colors">
+                            <h4 class="text-lg font-semibold text-gray-800">General Vaccine Info</h4>
+                            <i class="fa-solid fa-plus text-gray-500 transition-transform duration-300"></i>
+                        </button>
+                        <div class="accordion-content hidden p-4 pt-0">
+                            <div class="space-y-4">
+                                <p class="text-gray-700">Vaccines are a safe and effective way to prevent infectious diseases. They work by training the body's immune system to recognize and fight off specific viruses or bacteria. Here are some common vaccines:</p>
+                                <ul class="list-disc list-inside space-y-2 text-gray-600">
+                                    <li><strong class="font-medium">COVID-19:</strong> Protects against the coronavirus. Recommended for all eligible age groups.</li>
+                                    <li><strong class="font-medium">Influenza (Flu):</strong> An annual shot to protect against seasonal flu viruses.</li>
+                                    <li><strong class="font-medium">Hepatitis B:</strong> Protects against the virus that causes liver disease. Typically given in infancy.</li>
+                                    <li><strong class="font-medium">Polio:</strong> Protects against poliovirus, which can cause paralysis.</li>
+                                    <li><strong class="font-medium">HPV:</strong> Protects against human papillomavirus, which can cause certain cancers.</li>
+                                </ul>
+                                <p class="text-sm text-gray-600">Minor side effects like soreness at the injection site or a mild fever are common and temporary. Serious side effects are extremely rare.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Vaccine Eligibility Checker -->
+                    <div class="accordion-item bg-gray-100 rounded-xl border border-gray-200">
+                        <button class="accordion-header w-full flex items-center justify-between p-4 rounded-xl hover:bg-gray-200 transition-colors">
+                            <h4 class="text-lg font-semibold text-gray-800">Vaccine Eligibility Checker</h4>
+                            <i class="fa-solid fa-plus text-gray-500 transition-transform duration-300"></i>
+                        </button>
+                        <div class="accordion-content hidden p-4 pt-0">
+                            <p class="text-gray-700 mb-4">Enter your details to see recommended vaccines and check for any overdue doses.</p>
+                            <div class="space-y-4">
+                                <div>
+                                    <label for="age" class="block text-sm font-medium text-gray-700">Age</label>
+                                    <input type="number" id="age" class="mt-1 block w-full rounded-xl border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                </div>
+                                <div>
+                                    <label for="gender" class="block text-sm font-medium text-gray-700">Gender</label>
+                                    <select id="gender" class="mt-1 block w-full rounded-xl border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                        <option value="">Select Gender</option>
+                                        <option value="male">Male</option>
+                                        <option value="female">Female</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="health-condition" class="block text-sm font-medium text-gray-700">Health Condition (Optional)</label>
+                                    <input type="text" id="health-condition" placeholder="e.g., Diabetes, Asthma" class="mt-1 block w-full rounded-xl border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                </div>
+                                <button class="w-full bg-blue-600 text-white px-4 py-2 rounded-xl font-medium hover:bg-blue-700 transition-colors shadow-lg">Check Eligibility</button>
+                            </div>
+                            <div class="mt-4 p-4 bg-yellow-50 text-yellow-800 rounded-xl border border-yellow-200 hidden" id="overdue-alert">
+                                <p><strong class="font-medium">Alert:</strong> It appears you may have some overdue vaccines. Please consult a doctor for a personalized schedule.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Vaccine Record / Digital Certificate -->
+                    <div class="accordion-item bg-gray-100 rounded-xl border border-gray-200">
+                        <button class="accordion-header w-full flex items-center justify-between p-4 rounded-xl hover:bg-gray-200 transition-colors">
+                            <h4 class="text-lg font-semibold text-gray-800">Vaccine Record & Certificates</h4>
+                            <i class="fa-solid fa-plus text-gray-500 transition-transform duration-300"></i>
+                        </button>
+                        <div class="accordion-content hidden p-4 pt-0">
+                            <p class="text-gray-700 mb-4">Store your vaccination records and download digital certificates. Your data is kept secure.</p>
+                            <div class="space-y-4">
+                                <button class="w-full bg-green-600 text-white px-4 py-2 rounded-xl font-medium hover:bg-green-700 transition-colors shadow-lg">
+                                    <i class="fa-solid fa-cloud-arrow-up mr-2"></i> Upload Record
+                                </button>
+                                <button class="w-full bg-purple-600 text-white px-4 py-2 rounded-xl font-medium hover:bg-purple-700 transition-colors shadow-lg">
+                                    <i class="fa-solid fa-download mr-2"></i> Download Certificate
+                                </button>
+                                <div>
+                                    <label for="next-dose" class="block text-sm font-medium text-gray-700">Mark Next Due Dose</label>
+                                    <input type="date" id="next-dose" class="mt-1 block w-full rounded-xl border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Nearby Vaccine Centers -->
+                    <div class="accordion-item bg-gray-100 rounded-xl border border-gray-200">
+                        <button class="accordion-header w-full flex items-center justify-between p-4 rounded-xl hover:bg-gray-200 transition-colors">
+                            <h4 class="text-lg font-semibold text-gray-800">Nearby Vaccine Centers</h4>
+                            <i class="fa-solid fa-plus text-gray-500 transition-transform duration-300"></i>
+                        </button>
+                        <div class="accordion-content hidden p-4 pt-0">
+                            <p class="text-gray-700 mb-4">Find a hospital or clinic near you that offers vaccination services. Availability status may vary.</p>
+                            <a href="https://www.google.com/maps/search/vaccine+centers+near+me" target="_blank" class="w-full inline-block bg-indigo-600 text-white text-center px-4 py-2 rounded-xl font-medium hover:bg-indigo-700 transition-colors shadow-lg">
+                                <i class="fa-solid fa-map-location-dot mr-2"></i> Find Nearby Centers
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Reminders & Notifications -->
+                    <div class="accordion-item bg-gray-100 rounded-xl border border-gray-200">
+                        <button class="accordion-header w-full flex items-center justify-between p-4 rounded-xl hover:bg-gray-200 transition-colors">
+                            <h4 class="text-lg font-semibold text-gray-800">Reminders & Notifications</h4>
+                            <i class="fa-solid fa-plus text-gray-500 transition-transform duration-300"></i>
+                        </button>
+                        <div class="accordion-content hidden p-4 pt-0">
+                            <p class="text-gray-700">Set up gentle reminders for your next dose to ensure you stay on schedule.</p>
+                            <div class="mt-4 flex flex-col sm:flex-row gap-4">
+                                <input type="time" class="flex-grow rounded-xl border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                <button class="bg-blue-600 text-white px-4 py-2 rounded-xl font-medium hover:bg-blue-700 transition-colors shadow-lg">Set Reminder</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- FAQ & Guidance -->
+                    <div class="accordion-item bg-gray-100 rounded-xl border border-gray-200">
+                        <button class="accordion-header w-full flex items-center justify-between p-4 rounded-xl hover:bg-gray-200 transition-colors">
+                            <h4 class="text-lg font-semibold text-gray-800">FAQ & Guidance</h4>
+                            <i class="fa-solid fa-plus text-gray-500 transition-transform duration-300"></i>
+                        </button>
+                        <div class="accordion-content hidden p-4 pt-0">
+                            <p class="text-gray-700 font-medium mb-2">Common questions and guidance on vaccines.</p>
+                            <ul class="list-disc list-inside space-y-2 text-gray-600">
+                                <li><strong>Is it safe to take a vaccine while sick?</strong> Generally, mild illness like a cold is not a reason to delay. However, if you have a moderate to severe illness, it's best to wait until you recover.</li>
+                                <li><strong>What to do if I miss a dose?</strong> It's important to get the missed dose as soon as possible. Consult your doctor, as you typically don't need to restart the entire series.</li>
+                                <li><strong>Myths vs. Facts:</strong> Vaccines do NOT cause autism. This has been extensively studied and debunked by the medical community.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Children & Elderly Special Section -->
+                    <div class="accordion-item bg-gray-100 rounded-xl border border-gray-200">
+                        <button class="accordion-header w-full flex items-center justify-between p-4 rounded-xl hover:bg-gray-200 transition-colors">
+                            <h4 class="text-lg font-semibold text-gray-800">Special Sections: Children & Elderly</h4>
+                            <i class="fa-solid fa-plus text-gray-500 transition-transform duration-300"></i>
+                        </button>
+                        <div class="accordion-content hidden p-4 pt-0">
+                            <div class="space-y-4">
+                                <div class="p-4 bg-gray-50 rounded-xl border border-gray-200">
+                                    <h5 class="font-bold text-gray-800 mb-2">Vaccination Schedule for Children</h5>
+                                    <p class="text-sm text-gray-700">A child's immune system is still developing, so vaccines are crucial for preventing serious diseases like Measles, Mumps, and Rubella (MMR), Polio, and Tetanus.</p>
+                                </div>
+                                <div class="p-4 bg-gray-50 rounded-xl border border-gray-200">
+                                    <h5 class="font-bold text-gray-800 mb-2">Booster Shots for Adults & Elderly</h5>
+                                    <p class="text-sm text-gray-700">Immunity from some vaccines can decrease over time. Booster shots are recommended for adults and the elderly for diseases like Flu, Tetanus, and Pneumonia to maintain protection.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- AI/Chatbot Support -->
+                    <div class="accordion-item bg-gray-100 rounded-xl border border-gray-200">
+                        <button class="accordion-header w-full flex items-center justify-between p-4 rounded-xl hover:bg-gray-200 transition-colors">
+                            <h4 class="text-lg font-semibold text-gray-800">AI Chatbot for Vaccine Advice</h4>
+                            <i class="fa-solid fa-plus text-gray-500 transition-transform duration-300"></i>
+                        </button>
+                        <div class="accordion-content hidden p-4 pt-0">
+                            <p class="text-gray-700 mb-4">Get personalized vaccine recommendations. Simply type your question below.</p>
+                            <div class="flex gap-4">
+                                <input type="text" placeholder="e.g., Which vaccine for travel to Europe?" class="flex-grow p-2 rounded-xl border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                <button class="bg-blue-600 text-white px-4 py-2 rounded-xl font-medium hover:bg-blue-700 transition-colors shadow-lg">Ask</button>
+                            </div>
+                        </div>
+                    </div>
+
+                     <!-- Emergency Help -->
+                    <div class="accordion-item bg-gray-100 rounded-xl border border-gray-200">
+                        <button class="accordion-header w-full flex items-center justify-between p-4 rounded-xl hover:bg-gray-200 transition-colors">
+                            <h4 class="text-lg font-semibold text-gray-800">Emergency Help</h4>
+                            <i class="fa-solid fa-plus text-gray-500 transition-transform duration-300"></i>
+                        </button>
+                        <div class="accordion-content hidden p-4 pt-0">
+                            <p class="text-gray-700 mb-4">If you experience a severe allergic reaction (anaphylaxis) or other serious side effects after a vaccine, seek immediate medical attention.</p>
+                            <div class="space-y-2">
+                                <p class="font-bold text-red-600">Emergency Helpline: <span class="text-lg">112</span></p>
+                                <p class="font-bold text-red-600">Local Ambulance: <span class="text-lg">108</span></p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section hidden" id="diseases">
+            <div class="bg-white p-8 rounded-2xl shadow-md border border-gray-200">
+                <h2 class="text-3xl font-semibold mb-6 text-gray-800 text-center">Disease Information</h2>
+                <p class="text-gray-600 mb-6 text-center">Click on any disease name to get a brief overview.</p>
+                <div class="space-y-6">
+                    <!-- Most Common Diseases -->
+                    <div class="accordion-item bg-gray-100 rounded-xl border border-gray-200">
+                        <button class="accordion-header w-full flex items-center justify-between p-4 rounded-xl hover:bg-gray-200 transition-colors">
+                            <h4 class="text-lg font-semibold text-gray-800">Most Common Diseases</h4>
+                            <i class="fa-solid fa-plus text-gray-500 transition-transform duration-300"></i>
+                        </button>
+                        <div class="accordion-content hidden p-4 pt-0">
+                            <ul class="list-disc list-inside space-y-2 text-gray-600">
+                                <li class="cursor-pointer hover:underline" data-disease-modal="Cold & Flu (Influenza)">Cold & Flu (Influenza)</li>
+                                <li class="cursor-pointer hover:underline" data-disease-modal="Diabetes">Diabetes</li>
+                                <li class="cursor-pointer hover:underline" data-disease-modal="Hypertension">Hypertension (High Blood Pressure)</li>
+                                <li class="cursor-pointer hover:underline" data-disease-modal="Asthma">Asthma</li>
+                                <li class="cursor-pointer hover:underline" data-disease-modal="Tuberculosis (TB)">Tuberculosis (TB)</li>
+                                <li class="cursor-pointer hover:underline" data-disease-modal="COVID-19">COVID-19</li>
+                                <li class="cursor-pointer hover:underline" data-disease-modal="Malaria">Malaria</li>
+                                <li class="cursor-pointer hover:underline" data-disease-modal="Dengue Fever">Dengue Fever</li>
+                                <li class="cursor-pointer hover:underline" data-disease-modal="Pneumonia">Pneumonia</li>
+                                <li class="cursor-pointer hover:underline" data-disease-modal="Arthritis">Arthritis</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Rare Diseases -->
+                    <div class="accordion-item bg-gray-100 rounded-xl border border-gray-200">
+                        <button class="accordion-header w-full flex items-center justify-between p-4 rounded-xl hover:bg-gray-200 transition-colors">
+                            <h4 class="text-lg font-semibold text-gray-800">🌍 Rare Diseases</h4>
+                            <i class="fa-solid fa-plus text-gray-500 transition-transform duration-300"></i>
+                        </button>
+                        <div class="accordion-content hidden p-4 pt-0">
+                            <ul class="list-disc list-inside space-y-2 text-gray-600">
+                                <li class="cursor-pointer hover:underline" data-disease-modal="Progeria">Hutchinson-Gilford Progeria Syndrome (Progeria)</li>
+                                <li class="cursor-pointer hover:underline" data-disease-modal="Fibrodysplasia Ossificans Progressiva">Fibrodysplasia Ossificans Progressiva (Stone Man Syndrome)</li>
+                                <li class="cursor-pointer hover:underline" data-disease-modal="Alice in Wonderland Syndrome">Alice in Wonderland Syndrome</li>
+                                <li class="cursor-pointer hover:underline" data-disease-modal="Kuru">Kuru</li>
+                                <li class="cursor-pointer hover:underline" data-disease-modal="Fields’ Syndrome">Fields’ Syndrome</li>
+                                <li class="cursor-pointer hover:underline" data-disease-modal="Paraneoplastic Pemphigus">Paraneoplastic Pemphigus</li>
+                                <li class="cursor-pointer hover:underline" data-disease-modal="Stiff Person Syndrome">Stiff Person Syndrome</li>
+                                <li class="cursor-pointer hover:underline" data-disease-modal="Harlequin Ichthyosis">Harlequin Ichthyosis</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Communicable Diseases -->
+                    <div class="accordion-item bg-gray-100 rounded-xl border border-gray-200">
+                        <button class="accordion-header w-full flex items-center justify-between p-4 rounded-xl hover:bg-gray-200 transition-colors">
+                            <h4 class="text-lg font-semibold text-gray-800">🦠 Communicable (Infectious) Diseases</h4>
+                            <i class="fa-solid fa-plus text-gray-500 transition-transform duration-300"></i>
+                        </button>
+                        <div class="accordion-content hidden p-4 pt-0">
+                            <ul class="list-disc list-inside space-y-2 text-gray-600">
+                                <li class="cursor-pointer hover:underline" data-disease-modal="Common Cold">Common Cold</li>
+                                <li class="cursor-pointer hover:underline" data-disease-modal="Influenza (Flu)">Influenza (Flu)</li>
+                                <li class="cursor-pointer hover:underline" data-disease-modal="COVID-19">COVID-19</li>
+                                <li class="cursor-pointer hover:underline" data-disease-modal="Measles">Measles</li>
+                                <li class="cursor-pointer hover:underline" data-disease-modal="Chickenpox">Chickenpox</li>
+                                <li class="cursor-pointer hover:underline" data-disease-modal="Tuberculosis (TB)">Tuberculosis (TB)</li>
+                                <li class="cursor-pointer hover:underline" data-disease-modal="Hepatitis A, B, C">Hepatitis A, B, C</li>
+                                <li class="cursor-pointer hover:underline" data-disease-modal="HIV/AIDS">HIV/AIDS</li>
+                                <li class="cursor-pointer hover:underline" data-disease-modal="Malaria">Malaria</li>
+                                <li class="cursor-pointer hover:underline" data-disease-modal="Dengue Fever">Dengue Fever</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Non-Communicable Diseases -->
+                    <div class="accordion-item bg-gray-100 rounded-xl border border-gray-200">
+                        <button class="accordion-header w-full flex items-center justify-between p-4 rounded-xl hover:bg-gray-200 transition-colors">
+                            <h4 class="text-lg font-semibold text-gray-800">🧬 Non-Communicable (Chronic) Diseases</h4>
+                            <i class="fa-solid fa-plus text-gray-500 transition-transform duration-300"></i>
+                        </button>
+                        <div class="accordion-content hidden p-4 pt-0">
+                            <ul class="list-disc list-inside space-y-2 text-gray-600">
+                                <li class="cursor-pointer hover:underline" data-disease-modal="Diabetes">Diabetes</li>
+                                <li class="cursor-pointer hover:underline" data-disease-modal="Hypertension">Hypertension (High BP)</li>
+                                <li class="cursor-pointer hover:underline" data-disease-modal="Heart Disease">Heart Disease (Coronary Artery Disease)</li>
+                                <li class="cursor-pointer hover:underline" data-disease-modal="Stroke">Stroke</li>
+                                <li class="cursor-pointer hover:underline" data-disease-modal="Cancer">Cancer</li>
+                                <li class="cursor-pointer hover:underline" data-disease-modal="Asthma">Asthma</li>
+                                <li class="cursor-pointer hover:underline" data-disease-modal="Chronic Kidney Disease">Chronic Kidney Disease</li>
+                                <li class="cursor-pointer hover:underline" data-disease-modal="Osteoporosis">Osteoporosis</li>
+                                <li class="cursor-pointer hover:underline" data-disease-modal="Alzheimer’s Disease">Alzheimer’s Disease</li>
+                                <li class="cursor-pointer hover:underline" data-disease-modal="Obesity">Obesity</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section" id="emergency">
+            <div class="bg-white p-8 rounded-2xl shadow-md border border-gray-200">
+                <h2 class="text-3xl font-semibold mb-6 text-gray-800 text-center">Emergency Services</h2>
+                <div class="space-y-6">
+
+                    <!-- 1. Emergency Contacts -->
+                    <div class="accordion-item bg-gray-100 rounded-xl border border-gray-200">
+                        <button class="accordion-header w-full flex items-center justify-between p-4 rounded-xl hover:bg-gray-200 transition-colors">
+                            <h4 class="text-lg font-semibold text-gray-800">1. Emergency Contacts</h4>
+                            <i class="fa-solid fa-plus text-gray-500 transition-transform duration-300"></i>
+                        </button>
+                        <div class="accordion-content hidden p-4 pt-0">
+                            <div class="space-y-2 text-red-700">
+                                <p><strong>Local Ambulance:</strong> 108 (India) / 911 (US)</p>
+                                <p><strong>Fire & Police:</strong> 112 (India) / 911 (US)</p>
+                                <p><strong>Poison Control:</strong> 1800-111-777 (India) / 800-222-1222 (US)</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2. Nearest Hospital / Clinic Locator -->
+                    <div class="accordion-item bg-gray-100 rounded-xl border border-gray-200">
+                        <button class="accordion-header w-full flex items-center justify-between p-4 rounded-xl hover:bg-gray-200 transition-colors">
+                            <h4 class="text-lg font-semibold text-gray-800">2. Nearest Hospital / Clinic Locator</h4>
+                            <i class="fa-solid fa-plus text-gray-500 transition-transform duration-300"></i>
+                        </button>
+                        <div class="accordion-content hidden p-4 pt-0">
+                            <p class="text-gray-700 mb-4">Find the nearest emergency centers with a single tap.</p>
+                            <a href="https://www.google.com/maps/search/emergency+hospitals+near+me" target="_blank" class="w-full inline-block bg-blue-600 text-white text-center px-4 py-2 rounded-xl font-medium hover:bg-blue-700 transition-colors shadow-lg">
+                                <i class="fa-solid fa-map-location-dot mr-2"></i> Find Nearest Emergency
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- 3. First Aid Guides -->
+                    <div class="accordion-item bg-gray-100 rounded-xl border border-gray-200">
+                        <button class="accordion-header w-full flex items-center justify-between p-4 rounded-xl hover:bg-gray-200 transition-colors">
+                            <h4 class="text-lg font-semibold text-gray-800">3. First Aid Guides (Quick Access)</h4>
+                            <i class="fa-solid fa-plus text-gray-500 transition-transform duration-300"></i>
+                        </button>
+                        <div class="accordion-content hidden p-4 pt-0">
+                            <p class="text-gray-700 mb-4">Select a guide for step-by-step instructions with visuals.</p>
+                            <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                                <button class="first-aid-guide bg-white text-center p-4 rounded-xl border border-gray-300 hover:bg-gray-100 transition-colors shadow-sm" data-guide="cpr">
+                                    <i class="fa-solid fa-heart-pulse text-2xl text-red-500 mb-2"></i>
+                                    <span class="block text-sm font-medium">CPR</span>
+                                </button>
+                                <button class="first-aid-guide bg-white text-center p-4 rounded-xl border border-gray-300 hover:bg-gray-100 transition-colors shadow-sm" data-guide="choking">
+                                    <i class="fa-solid fa-xmark-circle text-2xl text-orange-500 mb-2"></i>
+                                    <span class="block text-sm font-medium">Choking</span>
+                                </button>
+                                <button class="first-aid-guide bg-white text-center p-4 rounded-xl border border-gray-300 hover:bg-gray-100 transition-colors shadow-sm" data-guide="bleeding">
+                                    <i class="fa-solid fa-band-aid text-2xl text-indigo-500 mb-2"></i>
+                                    <span class="block text-sm font-medium">Bleeding</span>
+                                </button>
+                                <button class="first-aid-guide bg-white text-center p-4 rounded-xl border border-gray-300 hover:bg-gray-100 transition-colors shadow-sm" data-guide="burns">
+                                    <i class="fa-solid fa-fire text-2xl text-yellow-500 mb-2"></i>
+                                    <span class="block text-sm font-medium">Burns</span>
+                                </button>
+                                <button class="first-aid-guide bg-white text-center p-4 rounded-xl border border-gray-300 hover:bg-gray-100 transition-colors shadow-sm" data-guide="fractures">
+                                    <i class="fa-solid fa-bone text-2xl text-gray-500 mb-2"></i>
+                                    <span class="block text-sm font-medium">Fractures</span>
+                                </button>
+                                <button class="first-aid-guide bg-white text-center p-4 rounded-xl border border-gray-300 hover:bg-gray-100 transition-colors shadow-sm" data-guide="snakebite">
+                                    <i class="fa-solid fa-snake text-2xl text-green-500 mb-2"></i>
+                                    <span class="block text-sm font-medium">Snake Bites</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 4. One-Tap SOS Button -->
+                    <div class="accordion-item bg-gray-100 rounded-xl border border-gray-200">
+                        <button class="accordion-header w-full flex items-center justify-between p-4 rounded-xl hover:bg-gray-200 transition-colors">
+                            <h4 class="text-lg font-semibold text-gray-800">4. One-Tap SOS Button</h4>
+                            <i class="fa-solid fa-plus text-gray-500 transition-transform duration-300"></i>
+                        </button>
+                        <div class="accordion-content hidden p-4 pt-0">
+                            <p class="text-gray-700 mb-4">Alert emergency contacts with your location in a single tap. (Requires setup in settings)</p>
+                            <a href="tel:112" class="w-full inline-block bg-red-600 text-white text-center px-4 py-3 rounded-xl font-medium hover:bg-red-700 transition-colors shadow-lg">
+                                <i class="fa-solid fa-phone mr-2"></i> SOS Call (112)
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- 5. Emergency Health Info -->
+                    <div class="accordion-item bg-gray-100 rounded-xl border border-gray-200">
+                        <button class="accordion-header w-full flex items-center justify-between p-4 rounded-xl hover:bg-gray-200 transition-colors">
+                            <h4 class="text-lg font-semibold text-gray-800">5. Emergency Health Info</h4>
+                            <i class="fa-solid fa-plus text-gray-500 transition-transform duration-300"></i>
+                        </button>
+                        <div class="accordion-content hidden p-4 pt-0">
+                            <div class="space-y-4">
+                                <div>
+                                    <h5 class="font-bold text-gray-800 mb-2">What to do during a Heart Attack?</h5>
+                                    <p class="text-gray-700 text-sm">Call for emergency help immediately. Chew and swallow an aspirin (if not allergic). Rest and stay calm. Loosen tight clothing.</p>
+                                </div>
+                                <div>
+                                    <h5 class="font-bold text-gray-800 mb-2">How to identify Anaphylaxis?</h5>
+                                    <p class="text-gray-700 text-sm">Symptoms include a sudden rash, swollen tongue/throat, difficulty breathing, dizziness. Administer an epinephrine injection (if available) and call emergency services immediately.</p>
+                                </div>
+                                <div>
+                                    <h5 class="font-bold text-gray-800 mb-2">Quick Drug Allergy Checklist</h5>
+                                    <p class="text-gray-700 text-sm">Common allergies to be aware of: Penicillin, NSAIDs (e.g., Ibuprofen), Sulfa drugs, etc.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 6. Disaster Preparedness -->
+                    <div class="accordion-item bg-gray-100 rounded-xl border border-gray-200">
+                        <button class="accordion-header w-full flex items-center justify-between p-4 rounded-xl hover:bg-gray-200 transition-colors">
+                            <h4 class="text-lg font-semibold text-gray-800">6. Disaster Preparedness</h4>
+                            <i class="fa-solid fa-plus text-gray-500 transition-transform duration-300"></i>
+                        </button>
+                        <div class="accordion-content hidden p-4 pt-0">
+                            <div class="space-y-4">
+                                <div>
+                                    <h5 class="font-bold text-gray-800 mb-2">Emergency Kit Checklist</h5>
+                                    <ul class="list-disc list-inside text-gray-700 text-sm">
+                                        <li>Water (one gallon per person per day)</li>
+                                        <li>Non-perishable food</li>
+                                        <li>Flashlight and extra batteries</li>
+                                        <li>First aid kit</li>
+                                        <li>Whistle to signal for help</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h5 class="font-bold text-gray-800 mb-2">Safety Tips for Earthquakes</h5>
+                                    <p class="text-gray-700 text-sm">"Drop, Cover, and Hold On." Drop to the ground, take cover under a sturdy table, and hold on until the shaking stops.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 7. AI/Chatbot Emergency Helper -->
+                    <div class="accordion-item bg-gray-100 rounded-xl border border-gray-200">
+                        <button class="accordion-header w-full flex items-center justify-between p-4 rounded-xl hover:bg-gray-200 transition-colors">
+                            <h4 class="text-lg font-semibold text-gray-800">7. AI Chatbot Emergency Helper</h4>
+                            <i class="fa-solid fa-plus text-gray-500 transition-transform duration-300"></i>
+                        </button>
+                        <div class="accordion-content hidden p-4 pt-0">
+                            <p class="text-gray-700 mb-4">Describe the emergency for immediate, AI-guided first aid suggestions.</p>
+                            <div class="flex gap-4">
+                                <input type="text" placeholder="e.g., My friend is choking..." class="flex-grow p-2 rounded-xl border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                <button class="bg-blue-600 text-white px-4 py-2 rounded-xl font-medium hover:bg-blue-700 transition-colors shadow-lg">Get Help</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 8. Family/Personal Emergency Profiles -->
+                    <div class="accordion-item bg-gray-100 rounded-xl border border-gray-200">
+                        <button class="accordion-header w-full flex items-center justify-between p-4 rounded-xl hover:bg-gray-200 transition-colors">
+                            <h4 class="text-lg font-semibold text-gray-800">8. Emergency Profiles</h4>
+                            <i class="fa-solid fa-plus text-gray-500 transition-transform duration-300"></i>
+                        </button>
+                        <div class="accordion-content hidden p-4 pt-0">
+                            <p class="text-gray-700 mb-4">Store and quickly share vital health information with emergency responders.</p>
+                            <div class="space-y-4">
+                                <div>
+                                    <label for="blood-group" class="block text-sm font-medium text-gray-700">Blood Group</label>
+                                    <input type="text" id="blood-group" class="mt-1 block w-full rounded-xl border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                </div>
+                                <div>
+                                    <label for="allergies" class="block text-sm font-medium text-gray-700">Allergies</label>
+                                    <input type="text" id="allergies" placeholder="e.g., Penicillin, Peanuts" class="mt-1 block w-full rounded-xl border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                </div>
+                                <button class="w-full bg-blue-600 text-white px-4 py-2 rounded-xl font-medium hover:bg-blue-700 transition-colors shadow-lg">Save Profile</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 9. Mental Health Crisis Help -->
+                    <div class="accordion-item bg-gray-100 rounded-xl border border-gray-200">
+                        <button class="accordion-header w-full flex items-center justify-between p-4 rounded-xl hover:bg-gray-200 transition-colors">
+                            <h4 class="text-lg font-semibold text-gray-800">9. Mental Health Crisis Help</h4>
+                            <i class="fa-solid fa-plus text-gray-500 transition-transform duration-300"></i>
+                        </button>
+                        <div class="accordion-content hidden p-4 pt-0">
+                            <div class="space-y-4 text-gray-700">
+                                <div>
+                                    <h5 class="font-bold text-gray-800 mb-2">Suicide Prevention Hotline</h5>
+                                    <p class="text-sm">If you or someone you know is in crisis, please seek immediate help. You can call the national helpline number: <strong>988</strong>.</p>
+                                </div>
+                                <div>
+                                    <h5 class="font-bold text-gray-800 mb-2">Panic Attack Calming Guide</h5>
+                                    <p class="text-sm">Use the 5-4-3-2-1 Grounding Technique: Name 5 things you see, 4 things you feel, 3 things you hear, 2 things you smell, and 1 thing you can taste.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 10. Languages & Accessibility -->
+                    <div class="accordion-item bg-gray-100 rounded-xl border border-gray-200">
+                        <button class="accordion-header w-full flex items-center justify-between p-4 rounded-xl hover:bg-gray-200 transition-colors">
+                            <h4 class="text-lg font-semibold text-gray-800">10. Languages & Accessibility</h4>
+                            <i class="fa-solid fa-plus text-gray-500 transition-transform duration-300"></i>
+                        </button>
+                        <div class="accordion-content hidden p-4 pt-0">
+                            <p class="text-gray-700">In an emergency, voice instructions in a local language or simple, clear text can be critical. This app is designed to provide voice instructions for key first aid steps and helplines, ensuring accessibility even in high-stress situations. Voice commands and translation features are being developed to make it easier for people with diverse linguistic needs to get help.</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section hidden" id="resources">
+            <div class="bg-white p-8 rounded-2xl shadow-md border border-gray-200">
+                <h2 class="text-3xl font-semibold mb-6 text-gray-800 text-center">Health Resources</h2>
+                <div class="space-y-6">
+                    <div class="bg-indigo-50 p-6 rounded-2xl border border-indigo-200">
+                        <h3 class="text-xl font-semibold text-indigo-800 mb-2">Government Health Portals</h3>
+                        <p class="text-indigo-700 mb-4">Find reliable and up-to-date information from official public health organizations.</p>
+                        <a href="#" class="inline-block bg-indigo-600 text-white px-6 py-3 rounded-xl font-medium hover:bg-indigo-700 transition-colors shadow-lg">Learn More</a>
+                    </div>
+                    <div class="bg-emerald-50 p-6 rounded-2xl border border-emerald-200">
+                        <h3 class="text-xl font-semibold text-emerald-800 mb-2">Educational Videos</h3>
+                        <p class="text-emerald-700 mb-4">Watch videos on a variety of health topics, from first aid to managing chronic conditions.</p>
+                        <a href="#" class="inline-block bg-emerald-600 text-white px-6 py-3 rounded-xl font-medium hover:bg-emerald-700 transition-colors shadow-lg">Watch Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Modals for First Aid Guides and Disease Info -->
+    <div id="info-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-lg w-full relative">
+            <button id="close-info-modal" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors">
+                <i class="fa-solid fa-xmark text-2xl"></i>
+            </button>
+            <h3 id="info-modal-title" class="text-2xl font-bold mb-4"></h3>
+            <div id="info-modal-content" class="text-gray-700 leading-relaxed overflow-y-auto max-h-[70vh]"></div>
+        </div>
+    </div>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sidebarItems = document.querySelectorAll('.sidebar-item');
+            const contentSections = document.querySelectorAll('.content-section');
+            const accordionHeaders = document.querySelectorAll('.accordion-header');
+            const sidebarToggle = document.getElementById('sidebar-toggle');
+            const sidebarOverlay = document.getElementById('sidebar-overlay');
+            const sidebar = document.querySelector('aside');
+            const chatHistory = document.getElementById('chat-history');
+            const chatInput = document.getElementById('chat-input');
+            const sendButton = document.getElementById('send-button');
+            const inputArea = document.getElementById('input-area');
+            const recommendations = document.getElementById('recommendations');
+            const homeRemediesContent = document.getElementById('home-remedies-content');
+            
+            const diseaseListItems = document.querySelectorAll('#home .cursor-pointer');
+            const diseaseModalListItems = document.querySelectorAll('[data-disease-modal]');
+            
+            // Info modal for diseases and first aid
+            const infoModal = document.getElementById('info-modal');
+            const infoModalTitle = document.getElementById('info-modal-title');
+            const infoModalContent = document.getElementById('info-modal-content');
+            const closeInfoModalBtn = document.getElementById('close-info-modal');
+            
+            // Mental Health specific elements
+            const mentalHealthHome = document.getElementById('mental-health-home');
+            const mentalHealthDetail = document.getElementById('mental-health-detail');
+            const showMeditationBtn = document.getElementById('show-meditation');
+            const showMoodTrackerBtn = document.getElementById('show-mood-tracker');
+            const backToMhHomeBtn = document.getElementById('back-to-mh-home');
+            const meditationContent = document.getElementById('meditation-content');
+            const moodTrackerContent = document.getElementById('mood-tracker-content');
+            const moodEmojis = document.querySelectorAll('.mood-emoji');
+            const moodTags = document.querySelectorAll('.mood-tag');
+            const timerButtons = document.querySelectorAll('.timer-button');
+            const customTimerInput = document.getElementById('custom-timer');
+            const startTimerBtn = document.getElementById('start-custom-timer');
+            const resetTimerBtn = document.getElementById('reset-custom-timer');
+            const timerDisplay = document.getElementById('timer-display');
+            
+            let timerInterval;
+            let totalSeconds;
+
+            function formatTime(seconds) {
+                const minutes = Math.floor(seconds / 60);
+                const remainingSeconds = seconds % 60;
+                return `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
+            }
+
+            function startTimer() {
+                startTimerBtn.textContent = 'Pause';
+                customTimerInput.disabled = true;
+
+                timerInterval = setInterval(() => {
+                    if (totalSeconds <= 0) {
+                        clearInterval(timerInterval);
+                        timerDisplay.textContent = '00:00';
+                        alert("Meditation timer finished!");
+                        startTimerBtn.textContent = 'Start';
+                        customTimerInput.disabled = false;
+                        return;
+                    }
+                    totalSeconds--;
+                    timerDisplay.textContent = formatTime(totalSeconds);
+                }, 1000);
+            }
+
+            function pauseTimer() {
+                clearInterval(timerInterval);
+                startTimerBtn.textContent = 'Resume';
+            }
+
+            function resetTimer() {
+                clearInterval(timerInterval);
+                startTimerBtn.textContent = 'Start';
+                customTimerInput.disabled = false;
+                totalSeconds = 0;
+                timerDisplay.textContent = formatTime(totalSeconds);
+            }
+
+            startTimerBtn.addEventListener('click', () => {
+                if (startTimerBtn.textContent === 'Start' || startTimerBtn.textContent === 'Resume') {
+                    if (startTimerBtn.textContent === 'Start') {
+                         totalSeconds = parseInt(customTimerInput.value) * 60;
+                         if (isNaN(totalSeconds) || totalSeconds <= 0) {
+                            alert("Please enter a valid number of minutes.");
+                            return;
+                        }
+                        timerDisplay.textContent = formatTime(totalSeconds);
+                    }
+                    startTimer();
+                } else {
+                    pauseTimer();
+                }
+            });
+
+            resetTimerBtn.addEventListener('click', () => {
+                resetTimer();
+            });
+
+            // Set initial timer value from input
+            customTimerInput.addEventListener('input', () => {
+                const minutes = parseInt(customTimerInput.value) || 0;
+                timerDisplay.textContent = formatTime(minutes * 60);
+            });
+
+            // Set pre-set timers
+            timerButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const minutes = parseInt(button.dataset.minutes);
+                    customTimerInput.value = minutes;
+                    timerDisplay.textContent = formatTime(minutes * 60);
+                    resetTimer();
+                });
+            });
+
+            // Fitness Section
+            const workoutTabButtons = document.querySelectorAll('.workout-tab-button');
+            const workoutContentTabs = document.querySelectorAll('.workout-content-tab');
+            
+            function showWorkoutTab(targetId) {
+                workoutContentTabs.forEach(tab => tab.classList.add('hidden'));
+                workoutTabButtons.forEach(button => {
+                    button.classList.remove('bg-white');
+                    button.classList.remove('shadow-sm');
+                });
+                document.getElementById(targetId).classList.remove('hidden');
+                document.querySelector(`[data-target="${targetId}"]`).classList.add('bg-white', 'shadow-sm');
+            }
+            
+            workoutTabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const target = button.dataset.target;
+                    showWorkoutTab(target);
+                });
+            });
+
+            // Set initial active tab for Fitness on page load
+            showWorkoutTab('children-plan');
+
+
+            let symptomCheckerState = 'START';
+            let chatData = {};
+
+            // Data for disease awareness
+            const diseaseData = {
+                "Cholera": {
+                    title: "Cholera Awareness",
+                    content: "Cholera is an acute diarrhoeal disease caused by ingestion of food or water contaminated with the bacterium Vibrio cholerae. It remains a global threat to public health and an indicator of inequality and lack of social development. It can cause severe dehydration and is potentially life-threatening if untreated. Proper sanitation, access to clean water, and oral rehydration are key to prevention and treatment."
+                },
+                "Dengue Fever": {
+                    title: "Dengue Fever Awareness",
+                    content: "Dengue fever is a mosquito-borne tropical disease caused by the dengue virus. Symptoms typically include a high fever, headache, vomiting, muscle and joint pains, and a characteristic skin rash. There is no specific treatment for dengue. Prevention is the best approach, focusing on avoiding mosquito bites and controlling mosquito populations."
+                },
+                "Malaria": {
+                    title: "Malaria Awareness",
+                    content: "Malaria is a life-threatening disease caused by parasites that are transmitted to people through the bites of infected female Anopheles mosquitoes. It is preventable and curable, but remains a major public health concern. Symptoms include fever, headaches, and chills. Prevention methods include using insecticide-treated mosquito nets and taking prophylactic medicines."
+                },
+                "NCDs": {
+                    title: "Non-Communicable Diseases (NCDs)",
+                    content: "Non-communicable diseases, also known as chronic diseases, are not spread from person to person. The four main types are cardiovascular diseases, cancers, chronic respiratory diseases, and diabetes. These diseases are often linked to lifestyle factors like tobacco use, physical inactivity, unhealthy diet, and harmful use of alcohol."
+                },
+                "Zika Virus": {
+                    title: "Zika Virus Awareness",
+                    content: "Zika virus is transmitted by Aedes mosquitoes, the same type of mosquito that transmits dengue. Infection during pregnancy can cause microcephaly and other congenital malformations in the developing fetus. There is no vaccine or specific treatment for Zika. Prevention relies on reducing mosquito populations and avoiding mosquito bites."
+                },
+                "Nipah Virus": {
+                    title: "Nipah Virus Awareness",
+                    content: "Nipah virus is a bat-borne virus that can be transmitted to humans through infected animals (like pigs) or contaminated food, and also directly from person to person. The disease is characterized by fever, headache, and severe respiratory illness. There is no vaccine or specific treatment. Prevention involves avoiding contact with bats and sick pigs, and refraining from consuming raw date palm sap."
+                },
+                "Tuberculosis": {
+                    title: "Tuberculosis (TB) Awareness",
+                    content: "Tuberculosis is a bacterial infection that mainly affects the lungs. It is spread from person to person through the air. TB can be treated and cured with a standard course of medication. Untreated TB can be fatal. Early diagnosis and consistent treatment are crucial for controlling the spread of the disease."
+                },
+                 "Cold & Flu (Influenza)": {
+                    title: "Cold & Flu",
+                    content: "These are viral infections of the nose, throat, and lungs. While the common cold is generally milder, the flu can lead to serious complications. Rest, hydration, and over-the-counter medications can help manage symptoms."
+                },
+                "Diabetes": {
+                    title: "Diabetes",
+                    content: "A chronic health condition that affects how your body turns food into energy. It can lead to serious health problems like heart disease, vision loss, and kidney disease. Managing it involves a healthy diet, exercise, and medication."
+                },
+                "Hypertension": {
+                    title: "Hypertension (High Blood Pressure)",
+                    content: "A common condition where the long-term force of the blood against your artery walls is high enough that it may eventually cause health problems, such as heart disease. It can often be managed with lifestyle changes and medication."
+                },
+                "Asthma": {
+                    title: "Asthma",
+                    content: "A chronic disease of the airways that causes breathing difficulty. It is often triggered by allergens, exercise, or stress. It is managed with inhalers and other medications to control symptoms and prevent attacks."
+                },
+                "COVID-19": {
+                    title: "COVID-19",
+                    content: "A highly contagious respiratory disease caused by the SARS-CoV-2 virus. Symptoms range from mild to severe, and it can be prevented with vaccination, masking, and social distancing."
+                },
+                "Pneumonia": {
+                    title: "Pneumonia",
+                    content: "An infection that inflames the air sacs in one or both lungs. The air sacs may fill with fluid or pus, causing cough, fever, chills, and difficulty breathing. It can be caused by bacteria, viruses, or fungi."
+                },
+                "Arthritis": {
+                    title: "Arthritis",
+                    content: "A disease causing painful inflammation and stiffness of the joints. There are many forms, including osteoarthritis and rheumatoid arthritis. Management includes physical therapy, medication, and lifestyle changes."
+                },
+                "Progeria": {
+                    title: "Hutchinson-Gilford Progeria Syndrome",
+                    content: "An extremely rare genetic disease that causes a child to age prematurely and rapidly. The life expectancy for a child with Progeria is typically around 14 years."
+                },
+                "Fibrodysplasia Ossificans Progressiva": {
+                    title: "Fibrodysplasia Ossificans Progressiva",
+                    content: "Also known as 'Stone Man Syndrome,' this is a very rare genetic disorder where the body's muscles, tendons, and ligaments gradually turn into bone, leading to permanent immobility."
+                },
+                "Alice in Wonderland Syndrome": {
+                    title: "Alice in Wonderland Syndrome",
+                    content: "A neurological condition that affects perception, causing the patient to perceive objects, other people, or parts of their own body as distorted in size or shape."
+                },
+                "Kuru": {
+                    title: "Kuru",
+                    content: "A rare and incurable neurodegenerative disorder that was once common among the Fore people of Papua New Guinea due to ritualistic cannibalism. It causes a loss of coordination and balance, and eventual death."
+                },
+                "Fields’ Syndrome": {
+                    title: "Fields’ Syndrome",
+                    content: "An extremely rare neuromuscular disease characterized by an inability to voluntarily move muscles, leading to loss of movement. Only two cases have been documented worldwide."
+                },
+                "Paraneoplastic Pemphigus": {
+                    title: "Paraneoplastic Pemphigus",
+                    content: "A rare autoimmune blistering disease that affects the skin and mucous membranes. It is typically associated with an underlying cancer."
+                },
+                "Stiff Person Syndrome": {
+                    title: "Stiff Person Syndrome",
+                    content: "A rare neurological disorder characterized by progressive muscle stiffness and painful muscle spasms. It affects a person's mobility and is an autoimmune disease."
+                },
+                "Harlequin Ichthyosis": {
+                    title: "Harlequin Ichthyosis",
+                    content: "A severe genetic disorder that mainly affects the skin, causing thick, diamond-shaped plates of skin to form on a newborn baby's body. It is extremely rare and often life-threatening."
+                },
+                "Common Cold": {
+                    title: "Common Cold",
+                    content: "A viral infection of your nose and throat (upper respiratory tract). It is usually harmless, though it can feel that way. Symptoms include a runny nose, sneezing, and a sore throat."
+                },
+                "Measles": {
+                    title: "Measles",
+                    content: "A highly contagious viral disease. Symptoms include a high fever, cough, runny nose, and a characteristic rash. It can be prevented with the MMR vaccine."
+                },
+                "Chickenpox": {
+                    title: "Chickenpox",
+                    content: "A viral infection that causes an itchy rash with small, fluid-filled blisters. It is highly contagious and most common in children. It can be prevented with the chickenpox vaccine."
+                },
+                "Hepatitis A, B, C": {
+                    title: "Hepatitis A, B, C",
+                    content: "Hepatitis is an inflammation of the liver. Hepatitis A is typically spread through contaminated food or water, while B and C are often transmitted through blood or bodily fluids."
+                },
+                "HIV/AIDS": {
+                    title: "HIV/AIDS",
+                    content: "Human Immunodeficiency Virus (HIV) is a virus that attacks the body's immune system. If not treated, it can lead to Acquired Immunodeficiency Syndrome (AIDS). There is no cure, but it can be managed with medication."
+                },
+                "Heart Disease": {
+                    title: "Heart Disease",
+                    content: "A broad term for a range of conditions that affect the heart and blood vessels. These conditions often develop over many years and can include coronary artery disease, heart failure, and abnormal heart rhythms."
+                },
+                "Stroke": {
+                    title: "Stroke",
+                    content: "Occurs when the blood supply to part of your brain is interrupted or reduced, preventing brain tissue from getting oxygen and nutrients. Brain cells begin to die in minutes. It is a medical emergency."
+                },
+                "Cancer": {
+                    title: "Cancer",
+                    content: "A disease in which some of the body’s cells grow uncontrollably and spread to other parts of the body. It can start almost anywhere and is a leading cause of death worldwide."
+                },
+                "Chronic Kidney Disease": {
+                    title: "Chronic Kidney Disease",
+                    content: "A condition characterized by a gradual loss of kidney function over time. The kidneys are unable to filter blood properly, leading to a buildup of waste and excess fluid in the body."
+                },
+                "Osteoporosis": {
+                    title: "Osteoporosis",
+                    content: "A medical condition in which the bones become brittle and fragile from loss of tissue, typically as a result of hormonal changes or deficiency of calcium or vitamin D."
+                },
+                "Alzheimer’s Disease": {
+                    title: "Alzheimer’s Disease",
+                    content: "A progressive disease that destroys memory and other important mental functions. It is the most common cause of dementia and is a devastating disease for both patients and their families."
+                },
+                "Obesity": {
+                    title: "Obesity",
+                    content: "A complex disease involving an excessive amount of body fat. It is a significant health concern that increases the risk of other diseases and health problems, such as heart disease, diabetes, and some cancers."
+                }
+            };
+
+            // Data for home remedies based on symptoms
+            const remediesData = {
+                "fever": `
+                    <ul class="list-disc list-inside space-y-2">
+                        <li><span class="font-medium">Stay Hydrated:</span> Drink plenty of water, juices, or clear broths. Fever can cause dehydration, so it's important to replenish fluids.</li>
+                        <li><span class="font-medium">Rest:</span> Your body needs rest to fight off the infection. Avoid physical activity and get plenty of sleep.</li>
+                        <li><span class="font-medium">Cooling Measures:</span> Take a lukewarm bath or use a cool, damp cloth on your forehead and neck to help bring down your body temperature.</li>
+                        <li><span class="font-medium">Light Clothing:</span> Wear light clothing and use a light blanket to help your body stay cool.</li>
+                        <li><span class="font-medium">Herbal Teas:</span> Teas with ingredients like ginger, tulsi (holy basil), or coriander can help soothe symptoms and support your immune system.</li>
+                    </ul>
+                `,
+                "cold": `
+                    <ul class="list-disc list-inside space-y-2">
+                        <li><span class="font-medium">Drink Warm Liquids:</span> Sip on warm liquids like chicken soup, herbal tea with honey, or warm lemon water to soothe a sore throat and help with congestion.</li>
+                        <li><span class="font-medium">Gargle with Salt Water:</span> Gargle with warm salt water to temporarily relieve a sore throat.</li>
+                        <li><span class="font-medium">Steam Inhalation:</span> Inhaling steam from a bowl of hot water or taking a steamy shower can help open up your nasal passages and ease congestion.</li>
+                        <li><span class="font-medium">Rest:</span> Give your body time to recover.</li>
+                        <li><span class="font-medium">Hydration:</span> Drink plenty of fluids to stay hydrated and help thin mucus.</li>
+                    </ul>
+                `,
+                "stomach ache": `
+                    <ul class="list-disc list-inside space-y-2">
+                        <li><span class="font-medium">Ginger Tea:</span> Ginger is a natural anti-inflammatory. A cup of ginger tea can help reduce nausea and soothe stomach muscles.</li>
+                        <li><span class="font-medium">Peppermint:</span> Peppermint tea or chewing on a peppermint candy can help relax stomach muscles and ease cramping.</li>
+                        <li><span class="font-medium">BRAT Diet:</span> Eat bland, easy-to-digest foods like bananas, rice, applesauce, and toast (the BRAT diet) to soothe your stomach.</li>
+                        <li><span class="font-medium">Apply Heat:</span> A heating pad or warm compress on your abdomen can help relax muscles and relieve pain.</li>
+                        <li><span class="font-medium">Stay Hydrated:</span> Sip on water or clear broths to avoid dehydration, especially if you have diarrhea or vomiting.</li>
+                    </ul>
+                `,
+                "headache": `
+                    <ul class="list-disc list-inside space-y-2">
+                        <li><span class="font-medium">Hydration:</span> Dehydration is a common cause of headaches. Drink plenty of water throughout the day.</li>
+                        <li><span class="font-medium">Cold Compress:</span> Apply a cold compress or an ice pack to your forehead or neck to help numb the pain and constrict blood vessels.</li>
+                        <li><span class="font-medium">Relax in a Dark Room:</span> Light and sound can worsen headaches. Find a quiet, dark room to rest in.</li>
+                        <li><span class="font-medium">Massage:</span> Gently massage your temples, neck, and shoulders to release muscle tension that may be causing the headache.</li>
+                        <li><span class="font-medium">Caffeine:</span> A small amount of caffeine from tea or coffee can sometimes help reduce headache pain.</li>
+                    </ul>
+                `,
+                "default": `
+                    <p>Based on your symptoms, we suggest focusing on general health measures to support your body's recovery. These include:</p>
+                    <ul class="list-disc list-inside space-y-2 mt-2">
+                        <li><span class="font-medium">Stay Hydrated:</span> Drink plenty of fluids to keep your body functioning properly.</li>
+                        <li><span class="font-medium">Rest:</span> Get enough sleep to allow your body to heal.</li>
+                        <li><span class="font-medium">Balanced Diet:</span> Eat nutritious foods to support your immune system.</li>
+                        <li><span class="font-medium">Hygiene:</span> Wash your hands frequently to prevent the spread of germs.</li>
+                    </ul>
+                `
+            };
+
+            const firstAidData = {
+                "cpr": {
+                    title: "CPR (Cardiopulmonary Resuscitation)",
+                    content: `
+                        <p class="text-sm mb-4">CPR is an emergency procedure that combines chest compressions and artificial ventilation to manually preserve brain function until further measures are taken.</p>
+                        <ol class="list-decimal list-inside space-y-2 text-gray-700 text-sm">
+                            <li><strong class="font-medium">Check the scene:</strong> Ensure the environment is safe for you and the person.</li>
+                            <li><strong class="font-medium">Call for help:</strong> Call the emergency number immediately.</li>
+                            <li><strong class="font-medium">Chest compressions:</strong> Place one hand over the other on the center of the chest and push hard and fast.</li>
+                            <li><strong class="font-medium">Rescue breaths:</strong> Tilt the head back slightly and lift the chin. Pinch the nose shut. Give two breaths, and check if the chest rises.</li>
+                            <li><strong class="font-medium">Repeat:</strong> Continue with cycles of 30 chest compressions and 2 rescue breaths until help arrives.</li>
+                        </ol>
+                        <div class="mt-4 text-center">
+                            
+                        </div>
+                    `
+                },
+                "choking": {
+                    title: "Choking",
+                    content: `
+                        <p class="text-sm mb-4">Choking occurs when an object gets lodged in the throat, blocking airflow. The Heimlich maneuver is a key first aid technique.</p>
+                        <ol class="list-decimal list-inside space-y-2 text-gray-700 text-sm">
+                            <li><strong class="font-medium">Assess the situation:</strong> Ask the person "Are you choking?" If they can't speak, cough, or breathe, act immediately.</li>
+                            <li><strong class="font-medium">Back blows:</strong> Stand behind the person and give five firm back blows between the shoulder blades with the heel of your hand.</li>
+                            <li><strong class="font-medium">Abdominal thrusts:</strong> If back blows don't work, give five abdominal thrusts (Heimlich maneuver). Make a fist with one hand and place it slightly above the person's navel. Grasp the fist with your other hand and press hard and fast into the abdomen.</li>
+                            <li><strong class="font-medium">Repeat:</strong> Continue cycles of five back blows and five abdominal thrusts until the object is dislodged or help arrives.</li>
+                        </ol>
+                    `
+                },
+                "bleeding": {
+                    title: "Severe Bleeding / Cuts",
+                    content: `
+                        <p class="text-sm mb-4">Immediate action is crucial to control severe bleeding. The main goal is to apply pressure and stop the blood loss.</p>
+                        <ol class="list-decimal list-inside space-y-2 text-gray-700 text-sm">
+                            <li><strong class="font-medium">Apply direct pressure:</strong> Place a clean cloth, tissue, or sterile bandage over the wound and press down firmly.</li>
+                            <li><strong class="font-medium">Elevate the wound:</strong> If possible, raise the injured part above the level of the heart to slow down blood flow.</li>
+                            <li><strong class="font-medium">Maintain pressure:</strong> Keep applying pressure to the wound until help arrives. Do not remove the bandage to check the wound; add more layers if needed.</li>
+                        </ol>
+                    `
+                },
+                "burns": {
+                    title: "Burns",
+                    content: `
+                        <p class="text-sm mb-4">Immediate and proper care for burns can prevent further damage and reduce pain. The first step is to cool the burn.</p>
+                        <ol class="list-decimal list-inside space-y-2 text-gray-700 text-sm">
+                            <li><strong class="font-medium">Cool the burn:</strong> Hold the burned area under cool running water for 10-20 minutes. Do not use ice, as this can cause further tissue damage.</li>
+                            <li><strong class="font-medium">Remove jewelry:</strong> Gently remove any rings or tight clothing from the burned area before it swells.</li>
+                            <li><strong class="font-medium">Cover the burn:</strong> Cover the area with a sterile bandage or clean cloth. Do not pop blisters.</li>
+                            <li><strong class="font-medium">Seek medical help:</strong> For severe burns (large area, deep tissue, or blistering), seek professional medical help immediately.</li>
+                        </ol>
+                    `
+                },
+                "fractures": {
+                    title: "Fractures",
+                    content: `
+                        <p class="text-sm mb-4">A fracture is a broken bone. The main goal of first aid is to immobilize the injured area and prevent further injury.</p>
+                        <ol class="list-decimal list-inside space-y-2 text-gray-700 text-sm">
+                            <li><strong class="font-medium">Do not move the person:</strong> If you suspect a serious fracture, especially of the neck or back, do not move the person.</li>
+                            <li><strong class="font-medium">Immobilize the area:</strong> Use a splint (e.g., a rolled newspaper or board) to immobilize the bone above and below the fracture site.</li>
+                            <li><strong class="font-medium">Apply a cold compress:</strong> Use an ice pack wrapped in a cloth to reduce swelling and pain.</li>
+                            <li><strong class="font-medium">Call for help:</strong> Contact emergency services immediately.</li>
+                        </ol>
+                    `
+                },
+                "snakebite": {
+                    title: "Snake Bites",
+                    content: `
+                        <p class="text-sm mb-4">A snakebite is a medical emergency. Do not attempt to suck out the venom or apply a tourniquet.</p>
+                        <ol class="list-decimal list-inside space-y-2 text-gray-700 text-sm">
+                            <li><strong class="font-medium">Stay calm:</strong> Keep the person calm and still. Panic can increase heart rate and spread venom more quickly.</li>
+                            <li><strong class="font-medium">Remove tight items:</strong> Remove any jewelry or tight clothing from the area of the bite.</li>
+                            <li><strong class="font-medium">Clean the wound:</strong> Gently clean the wound with soap and water, but do not flush it.</li>
+                            <li><strong class="font-medium">Seek medical help:</strong> Call emergency services immediately. Try to remember the snake's appearance for identification, but do not attempt to catch it.</li>
+                        </ol>
+                    `
+                }
+            };
+
+
+            // Set initial state
+            sidebarItems[0].querySelector('a').classList.add('bg-blue-50', 'text-blue-600');
+            sidebarItems[0].querySelector('i').classList.add('text-blue-600');
+            sidebarItems[0].querySelector('span').classList.add('text-blue-600');
+
+            // Handle sidebar clicks
+            sidebarItems.forEach(item => {
+                item.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    
+                    // Reset chatbot state on navigation
+                    if (item.dataset.target === 'symptom-checker') {
+                        symptomCheckerState = 'START';
+                        chatData = {};
+                        chatHistory.innerHTML = `
+                            <div class="flex items-start">
+                                <div class="bg-teal-50 p-4 rounded-b-2xl rounded-tr-2xl shadow-sm max-w-sm">
+                                    <p class="text-gray-800">Hello! I'm your health assistant. How can I help you today?</p>
+                                </div>
+                            </div>
+                        `;
+                        inputArea.classList.remove('hidden');
+                        recommendations.classList.add('hidden');
+                    }
+                    
+                    // Remove active state from all
+                    sidebarItems.forEach(i => {
+                        const a = i.querySelector('a');
+                        const icon = i.querySelector('i');
+                        const span = i.querySelector('span');
+                        a.classList.remove('bg-teal-50');
+                        icon.classList.remove('text-teal-600');
+                        span.classList.remove('text-teal-600');
+                    });
+
+                    // Add active state to clicked item
+                    const targetA = item.querySelector('a');
+                    const targetIcon = item.querySelector('i');
+                    const targetSpan = item.querySelector('span');
+                    targetA.classList.add('bg-teal-50');
+                    targetIcon.classList.add('text-teal-600');
+                    targetSpan.classList.add('text-teal-600');
+                    
+                    // Hide all content sections
+                    contentSections.forEach(section => section.classList.add('hidden'));
+
+                    // Show the selected content section
+                    const targetId = item.dataset.target;
+                    document.getElementById(targetId).classList.remove('hidden');
+
+                    // Close sidebar on mobile
+                    sidebar.classList.add('-translate-x-full');
+                    sidebarOverlay.classList.add('hidden');
+                });
+            });
+
+            // Handle accordion clicks
+            accordionHeaders.forEach(header => {
+                header.addEventListener('click', () => {
+                    const content = header.nextElementSibling;
+                    const icon = header.querySelector('i');
+                    
+                    if (content.classList.contains('hidden')) {
+                        content.classList.remove('hidden');
+                        icon.classList.remove('fa-plus');
+                        icon.classList.add('fa-minus');
+                    } else {
+                        content.classList.add('hidden');
+                        icon.classList.remove('fa-minus');
+                        icon.classList.add('fa-plus');
+                    }
+                });
+            });
+
+            // Handle mobile sidebar toggle
+            sidebarToggle.addEventListener('click', () => {
+                sidebar.classList.toggle('-translate-x-full');
+                sidebarOverlay.classList.toggle('hidden');
+            });
+
+            // Handle clicking the overlay to close the sidebar
+            sidebarOverlay.addEventListener('click', (e) => {
+                if (e.target.id === 'sidebar-overlay') {
+                    sidebar.classList.add('-translate-x-full');
+                    sidebarOverlay.classList.add('hidden');
+                }
+            });
+            
+            // Auto-resize textarea
+            if (chatInput) {
+                chatInput.addEventListener('input', () => {
+                    chatInput.style.height = 'auto';
+                    chatInput.style.height = (chatInput.scrollHeight) + 'px';
+                });
+            }
+
+            // Chatbot logic
+            const appendMessage = (message, sender) => {
+                const messageDiv = document.createElement('div');
+                messageDiv.classList.add('flex', 'items-start', 'mb-2');
+                const bubble = document.createElement('div');
+                bubble.classList.add('p-4', 'rounded-2xl', 'shadow-sm', 'max-w-sm', 'break-words');
+
+                const messageText = document.createElement('p');
+                messageText.textContent = message;
+                bubble.appendChild(messageText);
+
+                if (sender === 'user') {
+                    messageDiv.classList.add('justify-end');
+                    bubble.classList.add('bg-teal-600', 'text-white', 'rounded-br-none');
+                } else {
+                    bubble.classList.add('bg-white', 'text-gray-800', 'rounded-bl-none');
+                }
+                messageDiv.appendChild(bubble);
+                chatHistory.appendChild(messageDiv);
+                chatHistory.scrollTop = chatHistory.scrollHeight;
+            };
+
+            const processUserMessage = (message) => {
+                appendMessage(message, 'user');
+                const lowerCaseMessage = message.toLowerCase();
+
+                switch (symptomCheckerState) {
+                    case 'START':
+                        chatData.symptom = lowerCaseMessage;
+                        appendMessage(`How long have you been having this symptom?`, 'bot');
+                        symptomCheckerState = 'SYMPTOM_DURATION';
+                        break;
+                    case 'SYMPTOM_DURATION':
+                        chatData.duration = lowerCaseMessage;
+                        appendMessage(`What other symptoms do you have? You can list them.`, 'bot');
+                        symptomCheckerState = 'SYMPTOMS_LIST';
+                        break;
+                    case 'SYMPTOMS_LIST':
+                        chatData.symptoms = lowerCaseMessage;
+                        appendMessage(`Have you taken any medication for these symptoms?`, 'bot');
+                        symptomCheckerState = 'MEDICATION';
+                        break;
+                    case 'MEDICATION':
+                        chatData.medication = lowerCaseMessage;
+                        appendMessage(`Thank you for providing the information. Based on your symptoms, we recommend consulting a healthcare professional for a proper diagnosis.`, 'bot');
+                        
+                        let remediesHtml = remediesData.default;
+                        if (chatData.symptom.includes("fever")) {
+                            remediesHtml = remediesData.fever;
+                        } else if (chatData.symptom.includes("cold") || chatData.symptom.includes("cough")) {
+                            remediesHtml = remediesData.cold;
+                        } else if (chatData.symptom.includes("stomach ache") || chatData.symptom.includes("stomach pain") || chatData.symptom.includes("stomach")) {
+                            remediesHtml = remediesData.stomach_ache;
+                        } else if (chatData.symptom.includes("headache")) {
+                            remediesHtml = remediesData.headache;
+                        }
+                        homeRemediesContent.innerHTML = remediesHtml;
+
+                        setTimeout(() => {
+                           recommendations.classList.remove('hidden');
+                           inputArea.classList.add('hidden');
+                           chatHistory.scrollTop = chatHistory.scrollHeight;
+                        }, 1000);
+                        
+                        symptomCheckerState = 'COMPLETE';
+                        break;
+                    default:
+                        break;
+                }
+            };
+            
+            sendButton.addEventListener('click', () => {
+                const message = chatInput.value.trim();
+                if (message) {
+                    processUserMessage(message);
+                    chatInput.value = '';
+                    chatInput.style.height = 'auto';
+                }
+            });
+
+            chatInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    sendButton.click();
+                }
+            });
+
+            const firstAidGuideButtons = document.querySelectorAll('.first-aid-guide');
+
+            diseaseListItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    const diseaseName = item.dataset.disease;
+                    const data = diseaseData[diseaseName];
+                    if (data) {
+                        infoModalTitle.textContent = data.title;
+                        infoModalContent.innerHTML = data.content;
+                        infoModal.classList.remove('hidden');
+                    }
+                });
+            });
+
+            diseaseModalListItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    const diseaseName = item.dataset.diseaseModal;
+                    const data = diseaseData[diseaseName];
+                    if (data) {
+                        infoModalTitle.textContent = data.title;
+                        infoModalContent.innerHTML = data.content;
+                        infoModal.classList.remove('hidden');
+                    }
+                });
+            });
+
+            firstAidGuideButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const guideName = button.dataset.guide;
+                    const data = firstAidData[guideName];
+                    if (data) {
+                        infoModalTitle.textContent = data.title;
+                        infoModalContent.innerHTML = data.content;
+                        infoModal.classList.remove('hidden');
+                    }
+                });
+            });
+
+            closeInfoModalBtn.addEventListener('click', () => {
+                infoModal.classList.add('hidden');
+            });
+
+            infoModal.addEventListener('click', (e) => {
+                if (e.target.id === 'info-modal') {
+                    infoModal.classList.add('hidden');
+                }
+            });
+
+            const nutritionTabButtons = document.querySelectorAll('.nutrition-tab-button');
+            const nutritionContentTabs = document.querySelectorAll('.nutrition-content-tab');
+
+            function showNutritionTab(targetId) {
+                nutritionContentTabs.forEach(tab => tab.classList.add('hidden'));
+                nutritionTabButtons.forEach(button => {
+                    button.classList.remove('active-tab');
+                });
+                document.getElementById(targetId).classList.remove('hidden');
+                document.querySelector(`[data-target="${targetId}"]`).classList.add('active-tab');
+            }
+
+            nutritionTabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const target = button.dataset.target;
+                    showNutritionTab(target);
+                });
+            });
+            
+            showNutritionTab('diet-plans');
+
+            const mentalHealthTabButtons = document.querySelectorAll('#mental-health-home button');
+            const mentalHealthContentSections = document.querySelectorAll('#mental-health-detail > div');
+
+            function showMentalHealthContent(targetId) {
+                mentalHealthContentSections.forEach(section => section.classList.add('hidden'));
+                mentalHealthTabButtons.forEach(button => button.classList.remove('bg-teal-600', 'text-white'));
+                document.getElementById(targetId).classList.remove('hidden');
+                document.querySelector(`[data-target="${targetId}"]`).classList.add('bg-teal-600', 'text-white');
+            }
+
+            const mentalHealthTabs = {
+                'show-meditation': 'meditation-content',
+                'show-mood-tracker': 'mood-tracker-content'
+            };
+
+            for (const buttonId in mentalHealthTabs) {
+                const button = document.getElementById(buttonId);
+                button.addEventListener('click', () => {
+                    mentalHealthHome.classList.add('hidden');
+                    mentalHealthDetail.classList.remove('hidden');
+                    showMentalHealthContent(mentalHealthTabs[buttonId]);
+                });
+            }
+
+            backToMhHomeBtn.addEventListener('click', () => {
+                mentalHealthDetail.classList.add('hidden');
+                mentalHealthHome.classList.remove('hidden');
+            });
+
+            // Mood selection logic
+            moodEmojis.forEach(emoji => {
+                emoji.addEventListener('click', () => {
+                    moodEmojis.forEach(e => e.classList.remove('ring-2', 'ring-teal-600'));
+                    emoji.classList.add('ring-2', 'ring-teal-600');
+                });
+            });
+
+            moodTags.forEach(tag => {
+                tag.addEventListener('click', () => {
+                    tag.classList.toggle('bg-teal-600');
+                    tag.classList.toggle('text-white');
+                    tag.classList.toggle('bg-gray-200');
+                });
+            });
+            
+            const workoutTabButtons = document.querySelectorAll('.workout-tab-button');
+            const workoutContentTabs = document.querySelectorAll('.workout-content-tab');
+            
+            function showWorkoutTab(targetId) {
+                workoutContentTabs.forEach(tab => tab.classList.add('hidden'));
+                workoutTabButtons.forEach(button => {
+                    button.classList.remove('active-tab');
+                });
+                document.getElementById(targetId).classList.remove('hidden');
+                document.querySelector(`#workout-tabs [data-target="${targetId}"]`).classList.add('active-tab');
+            }
+            
+            workoutTabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const target = button.dataset.target;
+                    showWorkoutTab(target);
+                });
+            });
+
+            showWorkoutTab('children-plan');
+
+            sidebarItems.forEach(item => {
+                item.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    
+                    const newTarget = item.dataset.target;
+                    
+                    // Reset active states
+                    sidebarItems.forEach(i => {
+                        i.classList.remove('active-tab');
+                        i.querySelector('a').classList.remove('bg-teal-50');
+                        i.querySelector('i').classList.remove('text-teal-600');
+                        i.querySelector('span').classList.remove('text-teal-600');
+                    });
+                    
+                    // Set active state on clicked item
+                    item.classList.add('active-tab');
+                    item.querySelector('a').classList.add('bg-teal-50');
+                    item.querySelector('i').classList.add('text-teal-600');
+                    item.querySelector('span').classList.add('text-teal-600');
+                    
+                    contentSections.forEach(section => section.classList.add('hidden'));
+                    document.getElementById(newTarget).classList.remove('hidden');
+
+                    if (newTarget === 'symptom-checker') {
+                        symptomCheckerState = 'START';
+                        chatHistory.innerHTML = `<div class="flex items-start"><div class="bg-teal-50 p-4 rounded-2xl shadow-sm max-w-sm rounded-bl-none"><p class="text-gray-800">Hello! I'm your health assistant. How can I help you today?</p></div></div>`;
+                        inputArea.classList.remove('hidden');
+                        recommendations.classList.add('hidden');
+                    }
+                    
+                    sidebar.classList.add('-translate-x-full');
+                    sidebarOverlay.classList.add('hidden');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+
